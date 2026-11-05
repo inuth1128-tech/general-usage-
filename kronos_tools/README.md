@@ -46,6 +46,18 @@ Data files are CSVs with columns `timestamps, open, high, low, close` (`volume`,
    `python broker_mt5.py --side long --lots 0.06 --entry 2650 --stop 2642 --target 2670 --dry-run`
    Remove `--dry-run` to send; you must type exactly `yes`.
 
+## One-command wrapper
+
+`pipeline.py` runs the gates for one trade idea and stops at the first failure: news blackout (fails closed if the calendar cannot be fetched), time machine (+ Kronos paths via `--kronos-npz`), budget/risk (using the most conservative simulated odds, and requiring positive expected value), then an MT5 **dry run**. It only reaches the `yes` prompt if you add `--send`. You still choose side, entry, stop and target yourself, and Kronos is run separately beforehand.
+
+```
+python pipeline.py --csv XAUUSD.csv --side long --entry 2650 --stop 2642 --target 2670 \
+    --balance 5000 --kronos-npz paths.npz            # dry run only
+python pipeline.py ... --send                        # then type yes
+```
+
+Tested end to end on synthetic data with a fake MT5 object (pass, send, cancel, blackout, news failure, wrong-direction trade, failing risk check). Not tested against real data or a real terminal.
+
 ## What each script guarantees (and does not)
 
 - `run_kronos.py`: `sample_count>1` in Kronos **averages** paths into one, so paths are sampled with `sample_count=1` on 1,000 copies of the input.
@@ -57,4 +69,4 @@ Data files are CSVs with columns `timestamps, open, high, low, close` (`volume`,
 
 ## Files
 
-`analysis.py` coverage + race · `run_kronos.py` Kronos sampling · `timemachine.py` bootstrap + historical analogs · `budget_risk.py` sizing + checks · `broker_mt5.py` demo order · `scanner.py` ranking · `news.py` calendar + headlines
+`analysis.py` coverage + race · `run_kronos.py` Kronos sampling · `timemachine.py` bootstrap + historical analogs · `budget_risk.py` sizing + checks · `broker_mt5.py` demo order · `scanner.py` ranking · `news.py` calendar + headlines · `pipeline.py` gate wrapper
