@@ -1,0 +1,21 @@
+{
+ "updated_at": 1793893159405,
+ "day_over": false,
+ "floors": [
+  {
+   "id": "web",
+   "name": "웹 개발"
+  }
+ ],
+ "sessions": [
+  {
+   "id": "m1",
+   "name": "예시 세션",
+   "floor": "web",
+   "role": "main",
+   "status": "working",
+   "started_at": 1793892559405
+  }
+ ],
+ "questions": []
+}
