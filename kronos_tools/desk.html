@@ -1,0 +1,298 @@
+<title>Futures Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap">
+<style>
+/* Layout: one terminal screen. Left column = fan chart over 3D ridge. Right column = real-vs-futures readout, race, order book.
+   Deliberately single-theme (a trading terminal); every color is a token below. */
+:root{
+  --bg:#06080b; --panel:#0b0f14; --line:#1a222d; --text:#c8d3df; --dim:#6a788a;
+  --hot:#ff4a2b; --amber:#ffb454; --real:#4fd1ff; --up:#3ddc97; --down:#ff5d6c; --bid:#3a7bd5;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--text)}
+body{font-family:var(--mono);font-size:12px;line-height:1.45;
+  padding-block:10px 24px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;
+  border:1px solid var(--line);background:var(--panel);padding:8px 12px}
+.bar b{letter-spacing:.08em;font-weight:800}
+.tag{border:1px solid var(--amber);color:var(--amber);padding:1px 8px;letter-spacing:.08em;font-size:11px}
+.tag.live{border-color:var(--up);color:var(--up)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:10px;margin-top:10px}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.panel{border:1px solid var(--line);background:var(--panel);min-width:0}
+.ph{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:6px 10px;border-bottom:1px solid var(--line);
+  color:var(--dim);letter-spacing:.08em;font-size:11px;text-transform:uppercase}
+.ph b{color:var(--text);font-weight:600}
+canvas{display:block;width:100%}
+#fan{height:360px}#ridge{height:250px}
+@media (max-width:600px){#fan{height:290px}#ridge{height:210px}}
+.pad{padding:10px 12px}
+.big{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.sub{color:var(--real);letter-spacing:.08em;font-size:11px;margin-top:2px}
+.share{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;align-items:center;margin-top:12px;font-variant-numeric:tabular-nums}
+.share .lab{color:var(--dim)}
+.track{height:7px;background:var(--line);position:relative}
+.track i{position:absolute;inset:0 auto 0 0;display:block}
+table{border-collapse:collapse;width:100%;font-size:inherit;font-variant-numeric:tabular-nums}
+td,th{padding:3px 12px;text-align:right;font-weight:400}
+th{color:var(--dim);font-size:11px;letter-spacing:.06em}
+td:first-child,th:first-child{text-align:left}
+tr+tr td{border-top:1px solid var(--line)}
+.up{color:var(--up)}.down{color:var(--down)}.dim{color:var(--dim)}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:8px 12px;border-top:1px solid var(--line)}
+button,.btn,input{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);padding:4px 10px}
+button,.btn{cursor:pointer}
+button:hover,.btn:hover{border-color:var(--amber)}
+button:focus-visible,input:focus-visible,.btn:focus-within{outline:2px solid var(--amber);outline-offset:1px}
+input[type=range]{padding:0;accent-color:var(--real);flex:1 1 140px;min-width:100px}
+input[type=number]{width:96px}
+.btn input{display:none}
+.book .row{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;padding:1px 12px;font-variant-numeric:tabular-nums}
+.book .row span:nth-child(2),.book .row span:nth-child(3){text-align:right}
+.book .row u{position:absolute;inset:0 0 0 auto;display:block;opacity:.28}
+.book .row>span{position:relative}
+.note{color:var(--dim);font-size:11px;padding:6px 12px 8px}
+#msg{color:var(--down)}
+</style>
+
+<div class="bar">
+  <span><b>FUTURES DESK</b> <span class="dim">·</span> <span id="sym">XAU/USD</span> <span class="dim">· KRONOS FUTURES x REAL PRICE</span></span>
+  <span class="tag" id="mode">DEMO · SYNTHETIC DATA</span>
+</div>
+
+<div class="grid">
+  <div class="col">
+    <div class="panel">
+      <div class="ph"><span><b id="nfut">1,000</b> futures · next <b id="hor">48</b> candles</span><span id="pcts" class="dim">p10–p90 band dashed</span></div>
+      <canvas id="fan" aria-label="Fan chart of simulated future prices with the real price path"></canvas>
+      <div class="ctrl">
+        <button id="play" type="button">▶ Replay</button>
+        <label class="dim" for="k">Elapsed</label>
+        <input id="k" type="range" min="0" max="48" value="18">
+        <span id="kl" class="dim"></span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span>Ridge · distribution at each step ahead</span><span class="dim">orange = NOW · blue = real price</span></div>
+      <canvas id="ridge" aria-label="Ridge plot of the price distribution at successive future steps"></canvas>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="panel">
+      <div class="ph"><span>Real price against <b id="nfut2">1,000</b> futures</span></div>
+      <div class="pad">
+        <div class="big" id="real">–</div>
+        <div class="sub" id="rank">–</div>
+        <div class="share">
+          <span class="lab">futures below it</span><span class="track"><i id="bBelow" style="background:var(--down)"></i></span><b id="vBelow">–</b>
+          <span class="lab">futures above it</span><span class="track"><i id="bAbove" style="background:var(--up)"></i></span><b id="vAbove">–</b>
+          <span class="lab">from NOW</span><span></span><b id="vNow">–</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><span>Futures at +<b id="hz">48</b> candles</span></div>
+      <table id="qt"></table>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><span>Stop / target race</span><span class="dim">closes only</span></div>
+      <div class="ctrl" style="border-top:0">
+        <label class="dim" for="stop">Stop</label><input id="stop" type="number" step="0.01">
+        <label class="dim" for="tgt">Target</label><input id="tgt" type="number" step="0.01">
+      </div>
+      <table id="race"></table>
+      <div class="note">Counts which level each path reaches first on a candle close. Touches inside a candle are missed, and a close beyond both levels counts as a stop.</div>
+    </div>
+
+    <div class="panel book">
+      <div class="ph"><span>Order book</span><span class="dim">demo</span></div>
+      <div id="book"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><span>Data</span></div>
+      <div class="ctrl" style="border-top:0">
+        <label class="btn">Load paths.json<input id="file" type="file" accept=".json,application/json"></label>
+        <button id="demo" type="button">New demo</button>
+      </div>
+      <div class="note" id="msg" role="status"></div>
+      <div class="note">Make the file with <b>paths_to_json.py</b> from the <b>paths.npz</b> that run_kronos.py saves. Optional <b>realized</b> holds the real closes since NOW.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(x,d=2)=>x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0;while(!u)u=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*r())}
+
+/* ---------- data ---------- */
+let D=null, K=18, cols=[], timer=null;
+
+function demo(seed){
+  const r=rng(seed), N=1000, H=48, sig=0.0009;
+  const hist=[2638]; for(let i=1;i<128;i++) hist.push(hist[i-1]*Math.exp(gauss(r)*0.0007+0.00002));
+  const sc=2650.4/hist[hist.length-1]; for(let i=0;i<hist.length;i++) hist[i]*=sc;
+  const now=hist[hist.length-1], paths=[];
+  for(let i=0;i<N;i++){const p=new Float64Array(H);let c=now;const vol=sig*(0.7+0.6*r());
+    for(let t=0;t<H;t++){c*=Math.exp(gauss(r)*vol);p[t]=c}paths.push(p)}
+  const real=new Float64Array(H);let c=now;for(let t=0;t<H;t++){c*=Math.exp(gauss(r)*sig-0.00004);real[t]=c}
+  return {symbol:'XAU/USD',stepMin:5,now,history:hist,paths,realized:real,demo:true};
+}
+function setData(d){
+  D=d; const H=D.paths[0].length, N=D.paths.length;
+  cols=[]; for(let t=0;t<H;t++){const a=new Float64Array(N);for(let i=0;i<N;i++)a[i]=D.paths[i][t];a.sort();cols.push(a)}
+  $('sym').textContent=D.symbol; $('nfut').textContent=$('nfut2').textContent=N.toLocaleString('en-US');
+  $('hor').textContent=$('hz').textContent=H;
+  const m=$('mode'); m.textContent=D.demo?'DEMO · SYNTHETIC DATA':'LOADED · YOUR PATHS'; m.className='tag'+(D.demo?'':' live');
+  const rg=$('k'); rg.max=D.realized?Math.min(D.realized.length,H):0; K=Math.min(K,+rg.max); rg.value=K; rg.disabled=!D.realized;
+  $('play').disabled=!D.realized;
+  $('stop').value=(D.now*0.994).toFixed(2); $('tgt').value=(D.now*1.009).toFixed(2);
+  buildBook(); update();
+}
+const q=(a,p)=>{const i=(a.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo)};
+const realAt=k=>k===0||!D.realized?D.now:D.realized[k-1];
+
+/* ---------- drawing ---------- */
+function setup(cv){const dpr=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);return{g,w,h}}
+function range(){const H=D.paths[0].length;let lo=Infinity,hi=-Infinity;
+  for(let t=0;t<H;t++){lo=Math.min(lo,q(cols[t],0.005));hi=Math.max(hi,q(cols[t],0.995))}
+  D.history.slice(-64).forEach(v=>{lo=Math.min(lo,v);hi=Math.max(hi,v)});
+  if(D.realized)for(const v of D.realized){lo=Math.min(lo,v);hi=Math.max(hi,v)}
+  const m=(hi-lo)*0.05;return[lo-m,hi+m]}
+function ramp(d){const s=[[0,[16,6,10]],[.25,[90,15,18]],[.55,[214,41,30]],[.8,[255,138,31]],[1,[255,241,208]]];
+  for(let i=1;i<s.length;i++)if(d<=s[i][0]){const[a,ca]=s[i-1],[b,cb]=s[i],f=(d-a)/(b-a);
+    return`rgb(${ca.map((v,j)=>Math.round(v+(cb[j]-v)*f)).join(',')})`}return'rgb(255,241,208)'}
+function hist(t,lo,hi,B){const a=cols[t],h=new Float64Array(B),w=(hi-lo)/B;
+  for(let i=0;i<a.length;i++){const b=Math.floor((a[i]-lo)/w);if(b>=0&&b<B)h[b]++}return h}
+
+function drawFan(){
+  const{g,w,h}=setup($('fan')),H=D.paths[0].length,nh=Math.min(D.history.length,64);
+  const L=8,R=66,T=14,Bt=22,pw=w-L-R,ph=h-T-Bt,[lo,hi]=range(),span=nh-1+H;
+  const X=i=>L+i/span*pw,Y=v=>T+(1-(v-lo)/(hi-lo))*ph;
+  g.fillStyle=css('--panel');g.fillRect(0,0,w,h);
+  g.font='11px '+css('--mono');g.textBaseline='middle';
+  for(let i=0;i<=5;i++){const v=lo+(hi-lo)*i/5,y=Y(v);g.strokeStyle=css('--line');g.beginPath();g.moveTo(L,y);g.lineTo(L+pw,y);g.stroke();
+    g.fillStyle=css('--dim');g.textAlign='left';g.fillText(fmt(v),L+pw+6,y)}
+  const B=64,cw=pw/span+0.6;
+  for(let t=0;t<H;t++){const hs=hist(t,lo,hi,B);let mx=0;for(const v of hs)mx=Math.max(mx,v);if(!mx)continue;
+    for(let b=0;b<B;b++){if(!hs[b])continue;const d=Math.pow(hs[b]/mx,0.7);
+      g.fillStyle=ramp(d);g.globalAlpha=Math.min(1,0.15+d);
+      const y1=Y(lo+(b+1)*(hi-lo)/B),y0=Y(lo+b*(hi-lo)/B);g.fillRect(X(nh+t)-cw/2,y1,cw,y0-y1+0.6)}}
+  g.globalAlpha=1;
+  g.strokeStyle='rgba(255,255,255,0.07)';g.lineWidth=1;
+  for(let i=0;i<D.paths.length;i+=Math.ceil(D.paths.length/90)){g.beginPath();g.moveTo(X(nh-1),Y(D.now));
+    for(let t=0;t<H;t++)g.lineTo(X(nh+t),Y(D.paths[i][t]));g.stroke()}
+  const band=(p,dash,col)=>{g.setLineDash(dash);g.strokeStyle=col;g.lineWidth=1.4;g.beginPath();g.moveTo(X(nh-1),Y(D.now));
+    for(let t=0;t<H;t++)g.lineTo(X(nh+t),Y(q(cols[t],p)));g.stroke();g.setLineDash([])};
+  band(0.1,[5,4],css('--amber'));band(0.9,[5,4],css('--amber'));band(0.5,[],'rgba(255,255,255,.55)');
+  const st=parseFloat($('stop').value),tg=parseFloat($('tgt').value);
+  for(const[v,c]of[[st,css('--down')],[tg,css('--up')]])if(v>lo&&v<hi){g.setLineDash([2,4]);g.strokeStyle=c;g.beginPath();g.moveTo(L,Y(v));g.lineTo(L+pw,Y(v));g.stroke();g.setLineDash([])
+    g.fillStyle=c;g.textAlign='right';g.fillText(fmt(v),L+pw-4,Y(v)-7)}
+  const hs=D.history.slice(-nh);g.strokeStyle='#e8eef5';g.lineWidth=1.6;g.beginPath();hs.forEach((v,i)=>i?g.lineTo(X(i),Y(v)):g.moveTo(X(i),Y(v)));g.stroke();
+  g.strokeStyle=css('--amber');g.lineWidth=1;g.setLineDash([3,3]);g.beginPath();g.moveTo(X(nh-1),T);g.lineTo(X(nh-1),T+ph);g.stroke();g.setLineDash([]);
+  g.fillStyle=css('--amber');g.textAlign='center';g.fillText('NOW '+fmt(D.now),X(nh-1),T-4);
+  if(D.realized&&K>0){g.strokeStyle=css('--real');g.lineWidth=2.4;g.beginPath();g.moveTo(X(nh-1),Y(D.now));
+    for(let t=0;t<K;t++)g.lineTo(X(nh+t),Y(D.realized[t]));g.stroke();
+    const ex=X(nh+K-1),ey=Y(D.realized[K-1]);g.fillStyle=css('--real');g.beginPath();g.arc(ex,ey,4,0,7);g.fill();
+    g.strokeStyle=css('--bg');g.lineWidth=2;g.stroke()}
+  g.fillStyle=css('--dim');g.textBaseline='alphabetic';g.textAlign='center';
+  for(const f of[0,.5,1]){const t=Math.round(f*H);g.fillText(t?`+${t*D.stepMin}m`:'NOW',X(nh-1+t),h-6)}
+}
+
+function drawRidge(){
+  const{g,w,h}=setup($('ridge')),H=D.paths[0].length,[lo,hi]=range(),B=90;
+  g.fillStyle=css('--panel');g.fillRect(0,0,w,h);
+  const rows=[];for(let t=H-2;t>=1;t-=4)rows.push(t);
+  const hs=rows.map(t=>hist(t,lo,hi,B));let mx=0;hs.forEach(a=>a.forEach(v=>mx=Math.max(mx,v)));
+  const px=w*0.74,ox=w*0.16,base0=h-16,rise=h*0.5,amp=h*0.34,x0=10;
+  const rowsN=rows.length;
+  const X=(p,d)=>x0+(p-lo)/(hi-lo)*px+d*ox;
+  for(let r=0;r<rowsN;r++){
+    const t=rows[r],depth=t/H,by=base0-depth*rise,xo=depth*ox,a=hs[r];
+    g.beginPath();g.moveTo(x0+xo,by);
+    for(let b=0;b<B;b++){const v=a[b]/mx;const y=by-Math.pow(v,0.75)*amp*(1-0.35*depth);
+      g.lineTo(x0+xo+(b+0.5)/B*px,y)}
+    g.lineTo(x0+xo+px,by);g.closePath();
+    g.fillStyle=css('--bg');g.fill();
+    g.strokeStyle=ramp(1-depth*0.85);g.lineWidth=1.3;g.stroke();
+  }
+  const real=realAt(K),rx=d=>x0+(real-lo)/(hi-lo)*px+d*ox,nx=d=>x0+(D.now-lo)/(hi-lo)*px+d*ox;
+  const dMax=rows[0]/H,dMin=rows[rowsN-1]/H;
+  for(const[fx,c,dash]of[[nx,css('--amber'),[4,4]],[rx,css('--real'),[]]]){
+    g.strokeStyle=c;g.lineWidth=1.4;g.setLineDash(dash);g.beginPath();g.moveTo(fx(0),base0);g.lineTo(fx(dMax),base0-dMax*rise);g.stroke();g.setLineDash([])}
+  g.font='11px '+css('--mono');g.fillStyle=css('--dim');g.textAlign='left';g.fillText(fmt(lo),x0,h-3);
+  g.textAlign='right';g.fillText(fmt(hi),x0+px,h-3);g.textAlign='left';g.fillText('far →',x0+px*0.5,14);
+}
+
+/* ---------- readouts ---------- */
+function update(){
+  const H=D.paths[0].length,N=D.paths.length,real=realAt(K),sn=cols[Math.max(K,1)-1];
+  let below=0;for(let i=0;i<N;i++)if(sn[i]<real)below++;
+  const pb=below/N*100;
+  $('real').textContent='$'+fmt(real);
+  $('rank').textContent=K?`REAL AT P${Math.round(pb)} OF THE FUTURES · +${K*D.stepMin} MIN`:'NOW · NO REAL CANDLES YET';
+  $('bBelow').style.width=pb+'%';$('bAbove').style.width=(100-pb)+'%';
+  $('vBelow').textContent=pb.toFixed(1)+'%';$('vAbove').textContent=(100-pb).toFixed(1)+'%';
+  const dn=real-D.now;$('vNow').textContent=(dn>=0?'+':'')+fmt(dn);$('vNow').className=dn>=0?'up':'down';
+  $('kl').textContent=`+${K*D.stepMin} min of ${H*D.stepMin}`;
+  const last=cols[H-1];
+  $('qt').innerHTML='<tr><th></th><th>price</th><th>vs NOW</th></tr>'+[[.1,'p10'],[.25,'p25'],[.5,'p50'],[.75,'p75'],[.9,'p90']].map(([p,n])=>{
+    const v=q(last,p),c=(v/D.now-1)*100;return`<tr><td>${n}</td><td>${fmt(v)}</td><td class="${c>=0?'up':'down'}">${c>=0?'+':''}${c.toFixed(2)}%</td></tr>`}).join('');
+  race();drawFan();drawRidge();
+}
+function race(){
+  const st=parseFloat($('stop').value),tg=parseFloat($('tgt').value),el=$('race');
+  if(!(st>0&&tg>0)||st===tg||(st<D.now)===(tg<D.now)){el.innerHTML='<tr><td class="dim">Put the stop and target on opposite sides of NOW.</td></tr>';return}
+  const long=tg>D.now;let T=0,S=0,Nn=0;
+  for(const p of D.paths){let res=0;for(let t=0;t<p.length;t++){const c=p[t],hT=long?c>=tg:c<=tg,hS=long?c<=st:c>=st;
+    if(hS){res=2;break}if(hT){res=1;break}}res===1?T++:res===2?S++:Nn++}
+  const n=D.paths.length,row=(l,v,c)=>`<tr><td>${l}</td><td class="${c}">${v}</td><td class="${c}">${(v/n*100).toFixed(1)}%</td></tr>`;
+  el.innerHTML=row('target first',T,'up')+row('stop first',S,'down')+row('neither',Nn,'dim')
+    +`<tr><td class="dim">edge</td><td></td><td class="${T>=S?'up':'down'}">${((T-S)/n*100).toFixed(1)} pts</td></tr>`;
+}
+function buildBook(){
+  const r=rng(Math.round(D.now*100)),sp=D.now*0.0001,rows=[];
+  const lv=(side,n)=>{let cum=0;const a=[];for(let i=0;i<n;i++){const s=+(0.2+r()*2.4).toFixed(2);cum+=s;a.push({p:D.now+(side?1:-1)*(sp/2+i*sp*0.8),s,cum})}return a};
+  const asks=lv(1,6).reverse(),bids=lv(0,6),mx=Math.max(asks[0].cum,bids[5].cum);
+  const mk=(x,c)=>`<div class="row"><span style="color:${c}">${fmt(x.p)}</span><span>${x.s.toFixed(2)}</span><span>${x.cum.toFixed(2)}</span><u style="width:${x.cum/mx*100}%;background:${c}"></u></div>`;
+  $('book').innerHTML='<div class="row dim"><span>price</span><span>size</span><span>cum</span></div>'+asks.map(x=>mk(x,css('--down'))).join('')+
+    `<div class="row" style="border-block:1px solid var(--line)"><span class="dim">spread</span><span></span><span>${fmt(sp,2)}</span></div>`+bids.map(x=>mk(x,css('--bid'))).join('')
+    +'<div class="note">Synthetic ladder for layout only. It is not connected to a venue.</div>';
+}
+
+/* ---------- controls ---------- */
+$('k').addEventListener('input',e=>{K=+e.target.value;update()});
+$('stop').addEventListener('input',()=>{race();drawFan()});$('tgt').addEventListener('input',()=>{race();drawFan()});
+$('play').addEventListener('click',()=>{
+  if(timer){clearInterval(timer);timer=null;$('play').textContent='▶ Replay';return}
+  const max=+$('k').max;K=0;$('play').textContent='❚❚ Pause';
+  timer=setInterval(()=>{K++;$('k').value=K;update();if(K>=max){clearInterval(timer);timer=null;$('play').textContent='▶ Replay'}},350)});
+$('demo').addEventListener('click',()=>{$('msg').textContent='';setData(demo(Math.floor(Math.random()*1e6)))});
+$('file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;const fr=new FileReader();
+  fr.onload=()=>{try{
+    const j=JSON.parse(fr.result);
+    if(!Array.isArray(j.paths)||j.paths.length<20||!Array.isArray(j.paths[0]))throw Error('"paths" must be a list of at least 20 price lists.');
+    const H=j.paths[0].length;if(j.paths.some(p=>p.length!==H))throw Error('Every path needs the same length.');
+    if(!Array.isArray(j.history)||j.history.length<10)throw Error('"history" needs at least 10 closes.');
+    const now=j.now??j.history[j.history.length-1];
+    setData({symbol:j.symbol||'INSTRUMENT',stepMin:j.step_minutes||5,now,history:j.history,paths:j.paths.map(p=>Float64Array.from(p)),
+      realized:Array.isArray(j.realized)&&j.realized.length?Float64Array.from(j.realized):null,demo:false});
+    $('msg').textContent='';
+  }catch(err){$('msg').textContent='Could not load file: '+err.message}};
+  fr.readAsText(f)});
+new ResizeObserver(()=>{if(D){drawFan();drawRidge()}}).observe(document.body);
+setData(demo(7));
+</script>
