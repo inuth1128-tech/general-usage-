@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 봉제공장</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:#0e1320;color:#e8ecf5;font:14px/1.4 system-ui,-apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;padding:8px 14px;background:#121a2b;border-bottom:1px solid #243049;flex-wrap:wrap}
+h1{font-size:16px;margin:0}
+.note{font-size:12px;color:#9fb0cd}
+main{position:relative;min-height:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#1b2336,#121827)}
+main svg{width:100%;height:100%;max-width:1100px;display:block}
+footer{display:flex;gap:8px;flex-wrap:wrap;padding:8px 14px;background:#101727;border-top:1px solid #243049}
+.chip{font-size:12px;padding:3px 10px;border-radius:99px;background:#18223a;border:1px solid #2a3a5c;color:#cfd8ea;display:flex;gap:6px;align-items:center}
+.chip i{width:10px;height:10px;border-radius:3px;display:inline-block}
+</style>
+</head>
+<body>
+<header><h1>🧵 AI 봉제공장</h1><span class="note">이미지 시안 — 사람·상태 움직임은 아직 없음</span></header>
+<main id="stage"></main>
+<footer id="legend"></footer>
+<script>
+(()=>{
+'use strict';
+const TW=64,TH=32,CX=400,Y0=118,WH=100;
+const P=(x,y,z=0)=>[CX+(x-y)*TW/2,Y0+(x+y)*TH/2-z];
+function sh(hex,f){const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;
+  const m=v=>Math.max(0,Math.min(255,Math.round(f>=0?v+(255-v)*f:v*(1+f))));return `rgb(${m(r)},${m(g)},${m(b)})`;}
+const colr=h=>({t:sh(h,.2),l:sh(h,-.1),r:sh(h,-.26)});
+const poly=(a,fill,ex='')=>`<polygon points="${a.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="${fill}" ${ex}/>`;
+const box=(x,y,w,d,h,c,z0=0)=>{
+  const top=[P(x,y,z0+h),P(x+w,y,z0+h),P(x+w,y+d,z0+h),P(x,y+d,z0+h)];
+  const lf=[P(x,y+d,z0),P(x+w,y+d,z0),P(x+w,y+d,z0+h),P(x,y+d,z0+h)];
+  const rt=[P(x+w,y,z0),P(x+w,y+d,z0),P(x+w,y+d,z0+h),P(x+w,y,z0+h)];
+  return poly(lf,c.l)+poly(rt,c.r)+poly(top,c.t);};
+const objs=[];const add=(x,y,w,d,s)=>objs.push({d:x+w+y+d,s});
+const B=(x,y,w,d,h,hex,z0=0)=>add(x,y,w,d,box(x,y,w,d,h,colr(hex),z0));
+const hanger=(x,y,w,cols)=>{B(x,y,.12,.3,48,'#6b7280');B(x+w,y,.12,.3,48,'#6b7280');B(x,y,w+.12,.3,2.5,'#6b7280',46);
+  const n=Math.floor(w/.3);for(let k=0;k<n;k++)B(x+.15+k*.3,y+.02,.22,.26,26,cols[k%cols.length],19);};
+const FONT="font-family=\"'Noto Sans KR','Malgun Gothic',sans-serif\"";
+
+const ZONES=[
+ {n:'원단창고',x:0,y:0,c:'#c9b48a',tint:'#d9c9a3'},
+ {n:'재단',x:6,y:0,c:'#8fb3d9',tint:'#c3d3e2'},
+ {n:'봉제반',x:0,y:4,c:'#e48b6a',tint:'#e2cdbf'},
+ {n:'QC',x:6,y:4,c:'#7ccf9a',tint:'#c6dccd'},
+ {n:'아이롱',x:0,y:8,c:'#c69be0',tint:'#d8cbe0'},
+ {n:'패킹',x:6,y:8,c:'#f0c15a',tint:'#e6dcc0'}];
+
+const out=[];
+// 바닥 두께 + 바닥
+out.push(poly([P(0,12,0),P(12,12,0),P(12,12,-16),P(0,12,-16)],'#4a5163'));
+out.push(poly([P(12,0,0),P(12,12,0),P(12,12,-16),P(12,0,-16)],'#363c4b'));
+for(const z of ZONES)for(let i=0;i<6;i++)for(let j=0;j<4;j++){
+  const x=z.x+i,y=z.y+j;
+  out.push(poly([P(x,y),P(x+1,y),P(x+1,y+1),P(x,y+1)],(i+j)&1?sh(z.tint,.05):z.tint,'stroke="rgba(0,0,0,.07)" stroke-width=".6"'));}
+// 바닥 안전선(노란 선)
+const line=(x1,y1,x2,y2)=>out.push(poly([P(x1,y1),P(x2,y2),P(x2+(y1===y2?0:.12),y2+(y1===y2?.12:0)),P(x1+(y1===y2?0:.12),y1+(y1===y2?.12:0))],'#e8b923'));
+line(0,4,12,4);line(0,8,12,8);line(6,0,6,12);
+// 벽
+out.push(poly([P(0,0,0),P(0,12,0),P(0,12,WH),P(0,0,WH)],'#c9ccd2'));
+out.push(poly([P(0,0,0),P(12,0,0),P(12,0,WH),P(0,0,WH)],'#b4b8c0'));
+out.push(poly([P(0,0,0),P(0,12,0),P(0,12,7),P(0,0,7)],'rgba(0,0,0,.14)'));
+out.push(poly([P(0,0,0),P(12,0,0),P(12,0,7),P(0,0,7)],'rgba(0,0,0,.18)'));
+out.push(`<polyline points="${[P(0,12,WH),P(0,0,WH),P(12,0,WH)].map(p=>p.join(',')).join(' ')}" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="2"/>`);
+const wq=(pl,a1,a2,z1,z2,fill,ex='')=>poly(pl==='x'?[P(0,a1,z1),P(0,a2,z1),P(0,a2,z2),P(0,a1,z2)]:[P(a1,0,z1),P(a2,0,z1),P(a2,0,z2),P(a1,0,z2)],fill,ex);
+for(const [a,b] of [[1,3.4],[4.6,7],[8.2,10.8]])out.push(wq('y',a,b,50,88,'url(#sky)','stroke="#7d8591" stroke-width="2.5"'));
+for(const [a,b] of [[1.2,3.4],[8.6,10.8]])out.push(wq('x',a,b,50,88,'url(#sky)','stroke="#7d8591" stroke-width="2.5"'));
+// 셔터 문(왼쪽 벽)
+out.push(wq('x',4.4,7.6,0,72,'#5d6573'));
+for(let k=0;k<9;k++)out.push(wq('x',4.5,7.5,k*8,k*8+7,k&1?'#aab2bf':'#b8c0cc'));
+// 벽 걸이 간판(오른쪽 벽)
+out.push(wq('y',4.2,7.8,70,92,'#243049','stroke="#ffb84d" stroke-width="2"'));
+const sp=P(4.7,0,76);out.push(`<text transform="matrix(1,.5,0,1,${sp[0].toFixed(1)},${sp[1].toFixed(1)})" ${FONT} font-size="12" font-weight="700" fill="#ffd48a">AI 봉제공장</text>`);
+
+/* ---- 원단창고 (0..6, 0..4) ---- */
+const rollC=['#e4572e','#3a86ff','#f4b400','#2ec4b6','#8a5cf6','#ef476f','#9ca3af','#f5f5f0'];
+B(0.3,0.25,5.4,0.9,3,'#6b7280');               // 랙 바닥 레일
+for(const z0 of [4,22,40])B(0.3,0.25,5.4,0.9,2,'#59606c',z0);
+for(const x of [0.3,2.1,3.9,5.5])B(x,0.25,0.2,0.9,50,'#4b5563');
+for(let lv=0;lv<3;lv++)for(let k=0;k<7;k++)B(0.55+k*.74,0.35,.6,.7,12,rollC[(k*3+lv*5)%8],6+lv*18);
+// 팔레트 + 원단롤 더미
+B(1.0,2.2,1.8,1.2,2,'#a9835a');
+for(let k=0;k<3;k++)for(let l=0;l<2;l++)B(1.1+k*.55,2.3+l*.5,.5,.45,7,rollC[(k+l*3)%8],2);
+B(1.3,2.4,1.1,.9,7,rollC[2],9);
+B(3.8,2.4,1.8,1.2,2,'#a9835a');
+for(let k=0;k<3;k++)B(3.9+k*.55,2.6,.5,.9,8,rollC[(k*2+1)%8],2);
+// 핸드파렛트 트럭
+B(3.0,3.4,.35,.55,3,'#e8b923');
+
+/* ---- 재단 (6..12, 0..4) ---- */
+B(6.9,1.2,4.6,1.5,15,'#cdb38a');                 // 재단대
+B(7.0,1.3,4.4,1.3,4,'#5a7fb0',15);                 // 원단 겹(레이)
+B(7.0,1.3,4.4,1.3,2,'#ffffff',19);
+B(8.4,1.6,.9,.7,5,'#e8b923',21);                  // 재단기(전동칼)
+B(8.55,1.75,.2,.2,12,'#374151',26);
+B(10.2,1.5,.9,.4,1,'#f5f5f0',21);                 // 마커지
+B(6.4,0.3,.6,.6,22,'#7d4b2a');                    // 패턴 걸이대
+for(let k=0;k<4;k++)B(6.45,0.35,.5,.12,14,['#f4b400','#2ec4b6','#ef476f','#3a86ff'][k],4+k*0);
+B(11.0,0.4,.9,.9,10,'#6b7280');                   // 자투리 통
+B(11.1,0.5,.7,.7,3,'#2ec4b6',10);
+B(7.4,3.2,2.2,.6,10,'#8b6f4a');                   // 재단 완료 묶음 선반
+for(let k=0;k<4;k++)B(7.5+k*.5,3.3,.4,.4,5,rollC[(k+2)%8],10);
+
+/* ---- 봉제반 (0..6, 4..8) ---- */
+for(let r=0;r<2;r++)for(let c=0;c<3;c++){
+  const x=0.5+c*1.9,y=4.5+r*1.9;
+  B(x+.1,y-.7,.5,.5,9,'#2d3446');                 // 의자
+  B(x,y,1.5,.8,13,'#b0865a');                      // 작업대
+  B(x+.35,y+.15,.7,.45,5,'#d9dde4',13);            // 미싱 본체
+  B(x+.4,y+.2,.2,.3,9,'#9aa3b2',18);               // 미싱 헤드
+  B(x+1.05,y+.2,.15,.15,6,[ '#e4572e','#3a86ff','#f4b400'][c],13); // 실패
+  B(x+1.25,y+.5,.25,.25,3,'#f5f5f0',13);
+}
+B(5.1,4.4,.7,1.2,8,'#6b7280');                    // 번들 카트
+for(let k=0;k<3;k++)B(5.2,4.5+k*.35,.5,.3,4,rollC[(k*2)%8],8);
+B(5.1,6.5,.7,1.2,8,'#6b7280');
+for(let k=0;k<3;k++)B(5.2,6.6+k*.35,.5,.3,4,rollC[(k*2+3)%8],8);
+
+/* ---- QC (6..12, 4..8) ---- */
+B(6.6,4.6,2.6,1.1,13,'#d1d5db');                  // 검사대
+B(6.7,4.7,2.4,.9,1.5,'#fff7c2',13);               // 라이트 패널
+B(7.4,4.9,1.0,.5,3,'#7ccf9a',14.5);               // 검사 중인 옷
+B(7.0,5.6,.5,.5,9,'#2d3446');                      // 의자
+hanger(10.0,4.5,1.8,['#3a86ff','#2ec4b6','#f4b400']);  // OK 행어
+hanger(10.0,6.6,1.8,['#ef476f']);                  // 불량 행어
+B(6.8,6.8,1.6,.9,13,'#d1d5db');                   // 보조 검사대
+B(7.2,7.0,.8,.5,2,'#f5f5f0',13);
+B(9.0,7.1,.6,.6,6,'#ef476f');                     // 불량 박스
+
+/* ---- 아이롱 (0..6, 8..12) ---- */
+for(let k=0;k<3;k++){
+  const y=8.5+k*1.2;
+  B(0.6,y,2.6,.55,12,'#f2f2ee');                  // 다리미대
+  B(0.6,y,2.6,.55,1,'#9aa3b2',11);
+  B(1.2+k*.5,y+.1,.7,.3,4,'#c8ced8',13);           // 다리미
+  B(1.3+k*.5,y+.15,.15,.15,3,'#ef476f',17);
+}
+for(const p of [[1.7,8.3],[2.4,9.6],[1.9,10.8]])           // 스팀
+  add(p[0],p[1],0.2,0.2,`<ellipse cx="${P(p[0],p[1],34)[0]}" cy="${P(p[0],p[1],34)[1]}" rx="15" ry="9" fill="rgba(255,255,255,.55)"/><ellipse cx="${P(p[0],p[1],44)[0]+6}" cy="${P(p[0],p[1],44)[1]}" rx="10" ry="6" fill="rgba(255,255,255,.4)"/>`);
+hanger(4.3,8.4,1.4,['#8a5cf6','#3a86ff','#f5f5f0']);
+hanger(4.3,10.8,1.4,['#e4572e','#2ec4b6','#f4b400']);
+B(4.0,9.6,.9,.9,8,'#2563eb');                      // 물탱크
+
+/* ---- 패킹 (6..12, 8..12) ---- */
+B(6.6,8.6,3.0,1.2,13,'#cdb38a');                  // 패킹 작업대
+B(6.8,8.8,.9,.7,3,'#f5f5f0',13);                  // 접은 옷
+B(7.9,8.8,.9,.7,3,'#e4572e',13);
+B(8.9,8.9,.5,.4,5,'#374151',13);                  // 라벨 프린터
+B(6.6,10.4,3.0,1.0,13,'#cdb38a');
+B(7.2,10.55,1.0,.7,4,'#e6c89a',13);
+for(let k=0;k<3;k++)for(let l=0;l<2;l++)B(10.2+k*.55,8.5+l*.0,.5,.7,12+l*0,'#c79a5e',0);
+for(let k=0;k<3;k++)B(10.3+k*.55,9.5,.5,.7,12,'#c79a5e');
+B(10.3,10.5,.9,.9,16,'#c79a5e');                   // 완성 박스 더미
+B(11.2,10.5,.8,.9,12,'#d4a86a');
+B(10.4,10.6,.6,.7,12,'#c79a5e',16);
+B(10.2,11.5,1.6,.35,1,'#e8b923');                  // 출하 대기선
+// 파렛트
+B(8.8,11.0,1.2,.9,2,'#a9835a');
+
+objs.sort((a,b)=>a.d-b.d);
+// 구역 표지판(맨 위에 그려 가려지지 않게)
+const labels=ZONES.map(z=>{const g=P(z.x+3,z.y+0.4,0),t=P(z.x+3,z.y+0.4,96),w=z.n.length*17+26;
+  return `<line x1="${g[0]}" y1="${g[1]}" x2="${t[0]}" y2="${t[1]}" stroke="rgba(0,0,0,.35)" stroke-width="2"/><rect x="${t[0]-w/2}" y="${t[1]-14}" width="${w}" height="26" rx="7" fill="${z.c}" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/><text x="${t[0]}" y="${t[1]+5}" text-anchor="middle" ${FONT} font-size="15" font-weight="800" fill="#1a1f2b">${z.n}</text>`;}).join('');
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec9ee"/><stop offset="1" stop-color="#e6f5fc"/></linearGradient></defs>${out.join('')}${objs.map(o=>o.s).join('')}${labels}</svg>`;
+document.getElementById('stage').innerHTML=svg;
+document.getElementById('legend').innerHTML=ZONES.map(z=>`<span class="chip"><i style="background:${z.c}"></i>${z.n}</span>`).join('');
+})();
+</script>
+</body>
+</html>
