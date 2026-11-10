@@ -4,3 +4,6 @@ data/
 *.db
 *.db-journal
 node_modules/
+
+# 만들어진 영상 파일(용량이 커서 GitHub에 올리지 않음)
+media/out/
