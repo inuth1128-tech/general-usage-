@@ -1,6 +1,7 @@
 // 직원들이 일하는 곳. 비서실장을 포함해 모든 직원이 같은 방식으로 Claude를 호출한다.
 import { db } from './db.js';
 import { runClaude } from './claude.js';
+import { recall, addMemory, extractConclusion } from './memory.js';
 
 const DAILY_LIMIT = Number(process.env.DAILY_CALL_LIMIT || 20);
 export const lock = { busy: false }; // Pro 한도 보호: 한 번에 하나만 처리
@@ -17,8 +18,9 @@ export const COMPANY = `회사: tigercat-ai. 막대 인간(아웃라인) 캐릭�
 
 export function memoryBlock(memories) {
   if (!memories.length) return '';
-  return '\n[과거 기억 — 반드시 참고하고, 반복 금지 항목은 절대 같은 방식으로 하지 마세요]\n'
-    + memories.map((m) => `- (${m.kind}${m.do_not_repeat ? ', 반복 금지' : ''}) ${m.summary}`).join('\n') + '\n';
+  const label = (m) => [m.employee_id === null ? '회사 전체' : null, { rule: '규칙', lesson: '교훈', success: '성공', failure: '실패', note: '메모' }[m.kind] || m.kind, m.do_not_repeat ? '반복 금지' : null].filter(Boolean).join(', ');
+  return '\n[과거 기억 — 규칙과 반복 금지 항목은 반드시 지키고, 나머지는 참고하세요]\n'
+    + memories.map((m) => `- (${label(m)}) ${m.summary}`).join('\n') + '\n';
 }
 
 function buildPrompt(emp, instruction, memories) {
@@ -75,12 +77,11 @@ async function work(id, emp, instruction) {
   const started = Date.now();
   db.prepare("UPDATE tasks SET status = 'working', updated_at = datetime('now') WHERE id = ?").run(id);
   try {
-    const memories = db.prepare("SELECT kind, summary, do_not_repeat FROM memories WHERE employee_id = ? OR do_not_repeat = 1 ORDER BY id DESC LIMIT 10").all(emp.id);
+    const memories = recall(emp.id, instruction);
     const res = await runClaude(buildPrompt(emp, instruction, memories));
     db.prepare('INSERT INTO usage_log (employee_id, task_id, ok, duration_ms) VALUES (?, ?, ?, ?)').run(emp.id, id, res.ok ? 1 : 0, Date.now() - started);
     db.prepare("UPDATE tasks SET status = ?, result = ?, updated_at = datetime('now') WHERE id = ?").run(res.ok ? 'reported' : 'failed', res.text, id);
-    db.prepare('INSERT INTO memories (employee_id, task_id, kind, summary, do_not_repeat) VALUES (?, ?, ?, ?, 0)')
-      .run(emp.id, id, res.ok ? 'note' : 'failure', `지시 "${instruction.slice(0, 60)}" → ${res.ok ? '결과 제출' : '실패: ' + res.text.slice(0, 80)}`);
+    addMemory({ employeeId: emp.id, taskId: id, kind: res.ok ? 'note' : 'failure', summary: `지시 "${instruction.slice(0, 60)}" → ${res.ok ? '결과 제출' : '실패: ' + res.text.slice(0, 80)}` });
   } catch (e) {
     db.prepare("UPDATE tasks SET status = 'failed', result = ?, updated_at = datetime('now') WHERE id = ?").run(String(e.message), id);
   } finally {
@@ -96,13 +97,13 @@ export function reviewTask(id, verdict, note) {
   const text = String(note || '').trim().slice(0, 300);
   if (verdict === 'approved') {
     db.prepare("UPDATE tasks SET status = 'approved', updated_at = datetime('now') WHERE id = ?").run(task.id);
-    db.prepare("INSERT INTO memories (employee_id, task_id, kind, summary, do_not_repeat) VALUES (?, ?, 'success', ?, 0)")
-      .run(task.assignee_id, task.id, `대표 승인: "${task.title}"${text ? ' — ' + text : ''}`);
+    addMemory({ employeeId: task.assignee_id, taskId: task.id, kind: 'success', summary: `대표 승인: "${task.title}"${text ? ' — ' + text : ''}` });
+    // 승인된 회의의 결론은 회사 전체가 기억한다.
+    if (task.title.startsWith('회의:') && task.result) addMemory({ employeeId: null, taskId: task.id, kind: 'lesson', summary: `승인된 회의 결정(${task.title.slice(4).trim()}): ${extractConclusion(task.result)}` });
   } else if (verdict === 'rejected') {
     if (!text) return { error: '반려 사유를 적어 주세요. 직원이 다음에 같은 실수를 하지 않게 기억합니다.', status: 400 };
     db.prepare("UPDATE tasks SET status = 'rejected', updated_at = datetime('now') WHERE id = ?").run(task.id);
-    db.prepare("INSERT INTO memories (employee_id, task_id, kind, summary, do_not_repeat) VALUES (?, ?, 'failure', ?, 1)")
-      .run(task.assignee_id, task.id, `대표 반려("${task.title}"): ${text}`);
+    addMemory({ employeeId: task.assignee_id, taskId: task.id, kind: 'failure', summary: `대표 반려("${task.title}"): ${text}`, doNotRepeat: true });
   } else {
     return { error: 'verdict는 approved 또는 rejected 여야 합니다.', status: 400 };
   }

@@ -47,6 +47,10 @@
   .msg div { white-space:pre-wrap; word-break:break-word; margin-top:2px; }
   .mt { display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:8px 0; border-bottom:1px solid var(--line); cursor:pointer; }
   .mt:hover { color:#fff; }
+  .mem { display:flex; gap:10px; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .mem .body { flex:1; } .mem small { color:var(--mute); }
+  .k-rule { color:#ffcc00; } .k-failure { color:var(--red); } .k-success { color:#34c759; } .k-lesson { color:#5ac8fa; }
+  .nr { color:var(--red); font-weight:700; font-size:12px; }
   .st-approved { color:#34c759; } .st-rejected { color:var(--red); }
   .task { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px; }
   .task .head { display:flex; justify-content:space-between; gap:10px; color:var(--mute); font-size:13px; }
@@ -58,7 +62,7 @@
 <body>
 <header>
   <h1>tigercat<span>-ai</span> 업무사이트</h1>
-  <div class="sub">5단계: 회의와 메신저 — 직원들이 모여 토론하고 회의록을 남깁니다 (내 컴퓨터에서만 열립니다)</div>
+  <div class="sub">6단계: 기억 시스템 — 직원들이 관련 있는 과거 경험을 찾아 쓰고, 대표가 규칙을 가르칩니다 (내 컴퓨터에서만 열립니다)</div>
 </header>
 <main>
   <div id="err"></div>
@@ -83,6 +87,26 @@
   <div id="meetings" style="margin-top:12px"></div>
   <div id="room"></div>
 
+  <h2>기억 (직원들이 배운 것)</h2>
+  <div class="row" style="margin:0 0 8px">
+    <select id="mTarget"></select>
+    <select id="mKind"><option value="rule">규칙</option><option value="lesson">교훈</option><option value="failure">실패(하지 말 것)</option></select>
+    <input class="f" id="mText" placeholder="예) 영어 문장은 12단어 이하로 쓴다" style="flex:1;min-width:220px;margin:0">
+    <label class="usage"><input type="checkbox" id="mNr"> 반복 금지</label>
+    <button id="mAdd">기억 추가</button>
+  </div>
+  <div class="row" style="margin:0 0 6px">
+    <select id="mFilter"></select>
+    <span class="usage">규칙과 반복 금지는 해당 직원이 일할 때마다 항상 떠올립니다. '회사 전체'는 모든 직원이 떠올립니다.</span>
+  </div>
+  <div id="mems"></div>
+  <div class="row" style="margin-top:14px">
+    <select id="rcEmp"></select>
+    <input class="f" id="rcQ" placeholder="이 업무를 하면 무엇을 떠올릴까? 예) 대본 써줘" style="flex:1;min-width:220px;margin:0">
+    <button class="sub" id="rcBtn">떠올리는 기억 미리보기</button>
+  </div>
+  <div id="rcOut" class="usage" style="margin-top:8px;white-space:pre-wrap"></div>
+
   <h2>업무 기록</h2>
   <div id="tasks"></div>
 
@@ -99,7 +123,7 @@
   <div class="grid" id="grid"></div>
 
   <div class="note">
-    다음 단계(6단계)에서 기억 시스템을 다듬어, 과거 업무와 실패 경험을 직원들이 더 똑똑하게 찾아 쓰게 합니다.
+    다음 단계(7단계)에서 쇼츠 1편을 처음부터 끝까지 제작합니다 (대본 → 이미지 → 음성 → 영상).
   </div>
 </main>
 <script>
@@ -109,6 +133,41 @@ async function get(path) { const r = await fetch(path); if (!r.ok) throw new Err
 
 const STATUS = { requested: '접수됨', working: '처리 중…', reported: '보고 완료 · 확인 필요', approved: '승인됨', rejected: '반려됨', failed: '실패' };
 let EMPS = [];
+const KIND = { rule: '규칙', lesson: '교훈', success: '성공', failure: '실패', note: '메모' };
+function renderMemSelects() {
+  const emps = EMPS.map((e) => `<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('');
+  const keep = [$('mTarget').value, $('mFilter').value, $('rcEmp').value];
+  $('mTarget').innerHTML = `<option value="">회사 전체에게</option>` + emps;
+  $('mFilter').innerHTML = `<option value="">전체 기억 보기</option><option value="company">회사 전체 기억</option>` + emps;
+  $('rcEmp').innerHTML = emps;
+  [$('mTarget').value, $('mFilter').value, $('rcEmp').value] = keep.map((k, i) => (k !== undefined && [...[$('mTarget'), $('mFilter'), $('rcEmp')][i].options].some((o) => o.value === k)) ? k : [...[$('mTarget'), $('mFilter'), $('rcEmp')][i].options][0].value);
+}
+async function loadMems() {
+  const q = $('mFilter').value ? '?employee=' + encodeURIComponent($('mFilter').value) : '';
+  const list = await get('/api/memories' + q);
+  $('mems').innerHTML = list.length ? list.map((m) => `
+    <div class="mem"><span class="k-${esc(m.kind)}"><b>${KIND[m.kind] || esc(m.kind)}</b></span>
+      <div class="body">${m.doNotRepeat ? '<span class="nr">반복 금지</span> ' : ''}${esc(m.summary)}<br><small>${m.employeeId ? esc(m.employeeName) : '회사 전체'} · ${esc(m.createdAt)}</small></div>
+      <button class="sub" onclick="toggleNr(${m.id}, ${m.doNotRepeat ? 'false' : 'true'})">${m.doNotRepeat ? '금지 해제' : '반복 금지로'}</button>
+      <button class="sub" onclick="delMem(${m.id})">삭제</button></div>`).join('') : '<div class="usage">기억이 없습니다.</div>';
+}
+async function post(path, body) {
+  const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const j = await r.json(); if (!r.ok) { alert(j.error); return null; } return j;
+}
+async function toggleNr(id, v) { if (await post('/api/memories/' + id, { doNotRepeat: v })) loadMems(); }
+async function delMem(id) { if (confirm('이 기억을 지울까요? 직원이 더 이상 떠올리지 못합니다.') && await post('/api/memories/' + id + '/delete', {})) loadMems(); }
+$('mFilter').onchange = loadMems;
+$('mAdd').onclick = async () => {
+  const text = $('mText').value.trim(); if (!text) return;
+  const kind = $('mKind').value;
+  const j = await post('/api/memories', { employeeId: $('mTarget').value || null, kind, summary: text, doNotRepeat: $('mNr').checked || kind === 'failure' });
+  if (j) { $('mText').value = ''; $('mNr').checked = false; loadMems(); loadStats(); }
+};
+$('rcBtn').onclick = async () => {
+  const list = await get('/api/memories/recall?employee=' + encodeURIComponent($('rcEmp').value) + '&q=' + encodeURIComponent($('rcQ').value));
+  $('rcOut').textContent = list.length ? list.map((m) => `• (${m.company ? '회사 전체, ' : ''}${KIND[m.kind] || m.kind}${m.doNotRepeat ? ', 반복 금지' : ''}) ${m.summary}`).join('\n') : '떠올릴 기억이 없습니다.';
+};
 let openMeeting = null, mTimer = null;
 const MSTATUS = { running: '진행 중…', done: '완료', failed: '중단됨' };
 const sender = (id) => id === 'ceo' ? '대표' : who(id);
@@ -161,7 +220,7 @@ async function review(id, verdict) {
   else { note = prompt('승인 메모 (비워 둬도 됩니다)') ?? ''; }
   const r = await fetch('/api/tasks/' + id + '/review', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ verdict, note }) });
   const j = await r.json(); if (!r.ok) alert(j.error);
-  poll(); loadEmps();
+  poll(); loadEmps(); loadMems(); loadStats();
 }
 async function refreshTasks() {
   const [tasks, sum] = await Promise.all([get('/api/tasks'), get('/api/summary')]);
@@ -190,7 +249,7 @@ $('send').onclick = async () => {
   poll();
 };
 function renderEmps() {
-  renderChk();
+  renderChk(); renderMemSelects();
   const emps = EMPS;
   const sec = emps.find((e) => e.id === 'secretary');
   $('sec').innerHTML = `<div class="node sec"><b>${esc(sec.name)}</b><br><small>${esc(sec.title)}</small></div>`;
@@ -224,13 +283,16 @@ function editEmp(id) {
     <div class="actions"><button onclick="saveEmp('${esc(id)}', {name:$('e-name').value,title:$('e-title').value,role:$('e-role').value,persona:$('e-persona').value})">저장</button>
     <button class="sub" onclick="renderEmps()">취소</button></div>`;
 }
+async function loadStats() {
+  const sum = await get('/api/summary');
+  $('stats').innerHTML = [['직원', sum.employees], ['업무', sum.tasks], ['기억', sum.memories]]
+    .map(([k, v]) => `<div class="stat"><b>${v}</b><small>${k}</small></div>`).join('');
+}
 (async () => {
   try {
     await loadEmps();
-    const sum = await get('/api/summary');
-    $('stats').innerHTML = [['직원', sum.employees], ['업무', sum.tasks], ['기억', sum.memories]]
-      .map(([k, v]) => `<div class="stat"><b>${v}</b><small>${k}</small></div>`).join('');
-    poll(); refreshMeetings();
+    await loadStats();
+    poll(); refreshMeetings(); loadMems();
   } catch (e) {
     $('err').textContent = '서버에 연결하지 못했습니다: ' + e.message;
   }

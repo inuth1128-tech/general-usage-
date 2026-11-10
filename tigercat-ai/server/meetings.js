@@ -1,6 +1,7 @@
 // 회의와 메신저: 비서실장이 회의를 열고, 담당자들이 돌아가며 발언하고, 회의록을 정리한다.
 import { db } from './db.js';
 import { runClaude } from './claude.js';
+import { recall, addMemory, extractConclusion } from './memory.js';
 import { COMPANY, memoryBlock, lock, todayUsage, logUsage } from './agents.js';
 
 const MAX_PARTICIPANTS = 5;
@@ -86,7 +87,7 @@ async function run(meetingId, taskId, topic, emps, rounds) {
   try {
     for (let round = 1; round <= rounds; round++) {
       for (const emp of emps) {
-        const memories = db.prepare('SELECT kind, summary, do_not_repeat FROM memories WHERE employee_id = ? OR do_not_repeat = 1 ORDER BY id DESC LIMIT 8').all(emp.id);
+        const memories = recall(emp.id, topic, { limit: 6, charBudget: 900 });
         const started = Date.now();
         const res = await runClaude(speakerPrompt(emp, topic, transcript(meetingId), memories));
         logUsage(emp.id, taskId, res.ok, Date.now() - started);
@@ -102,6 +103,7 @@ async function run(meetingId, taskId, topic, emps, rounds) {
     say(meetingId, 'secretary', '회의를 마칩니다. 회의록을 정리했습니다.');
     db.prepare("UPDATE meetings SET status = 'done', minutes = ? WHERE id = ?").run(res.text, meetingId);
     db.prepare("UPDATE tasks SET status = 'reported', result = ?, updated_at = datetime('now') WHERE id = ?").run(res.text, taskId);
+    addMemory({ employeeId: 'secretary', taskId, kind: 'note', summary: `회의 #${meetingId}(${topic.slice(0, 40)}) 결론: ${extractConclusion(res.text)}` });
   } catch (e) {
     say(meetingId, 'secretary', '회의가 중단되었습니다: ' + e.message);
     db.prepare("UPDATE meetings SET status = 'failed' WHERE id = ?").run(meetingId);

@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './db.js';
+import { listMemories, addMemory, updateMemory, deleteMemory, recall } from './memory.js';
 import { startMeeting, ceoSay, listMeetings, getMeeting } from './meetings.js';
 import { submitInstruction, reviewTask, updateEmployee, todayUsage } from './agents.js';
 
@@ -30,7 +31,6 @@ const getApi = {
   '/api/health': () => ({ ok: true, company: 'tigercat-ai', time: new Date().toISOString() }),
   '/api/employees': () => db.prepare("SELECT id, name, title, role, reports_to AS reportsTo, engine, tools, persona, active FROM employees ORDER BY CASE id WHEN 'secretary' THEN 0 ELSE 1 END, rowid").all(),
   '/api/tasks': () => db.prepare('SELECT * FROM tasks ORDER BY id DESC LIMIT 50').all(),
-  '/api/memories': () => db.prepare('SELECT * FROM memories ORDER BY id DESC LIMIT 50').all(),
   '/api/summary': () => ({
     employees: db.prepare('SELECT COUNT(*) AS n FROM employees WHERE active = 1').get().n,
     tasks: db.prepare('SELECT COUNT(*) AS n FROM tasks').get().n,
@@ -56,6 +56,12 @@ const server = createServer(async (req, res) => {
         const d = await readJson(req);
         return reply(res, reviewTask(m[1], d.verdict, d.note));
       }
+      if (url.pathname === '/api/memories') {
+        const d = await readJson(req);
+        return reply(res, addMemory({ employeeId: d.employeeId || null, kind: d.kind || 'rule', summary: d.summary, doNotRepeat: !!d.doNotRepeat }), 201);
+      }
+      if ((m = url.pathname.match(/^\/api\/memories\/(\d+)\/delete$/))) return reply(res, deleteMemory(m[1]));
+      if ((m = url.pathname.match(/^\/api\/memories\/(\d+)$/))) return reply(res, updateMemory(m[1], await readJson(req)));
       if (url.pathname === '/api/meetings') {
         const d = await readJson(req);
         return reply(res, startMeeting(d.topic, d.participants, d.rounds), 202);
@@ -71,6 +77,11 @@ const server = createServer(async (req, res) => {
     }
     if (req.method !== 'GET') return json(res, { error: 'method not allowed' }, 405);
     if (getApi[url.pathname]) return json(res, getApi[url.pathname]());
+    if (url.pathname === '/api/memories') return json(res, listMemories({ employee: url.searchParams.get('employee') || undefined, kind: url.searchParams.get('kind') || undefined }));
+    if (url.pathname === '/api/memories/recall') {
+      const emp = url.searchParams.get('employee') || 'secretary';
+      return json(res, recall(emp, url.searchParams.get('q') || '').map((x) => ({ id: x.id, kind: x.kind, summary: x.summary, doNotRepeat: x.do_not_repeat, company: x.employee_id === null })));
+    }
     if (url.pathname === '/api/meetings') return json(res, listMeetings());
     let mm;
     if ((mm = url.pathname.match(/^\/api\/meetings\/(\d+)$/))) {
