@@ -1,0 +1,12 @@
+{
+  "name": "tigercat-ai",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "tigercat-ai: AI 직원 회사 (업무사이트 · 메신저 · 기억 시스템)",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "check": "node --disable-warning=ExperimentalWarning server/check.js"
+  }
+}

@@ -1,0 +1,6 @@
+# 로컬 데이터와 비밀값은 GitHub에 올리지 않는다
+data/
+.env
+*.db
+*.db-journal
+node_modules/

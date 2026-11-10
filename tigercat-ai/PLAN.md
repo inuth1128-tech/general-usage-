@@ -62,6 +62,9 @@
 | Instagram | tigercatai.official (프로페셔널 계정) | 완료 · Facebook 페이지 연결은 9단계에서 |
 | Threads | tigercatai.official 로 가입 (Instagram 계정 연동) | 완료 |
 
+## 진행 현황
+- 2단계(뼈대): 코드 완성 — 대표 확인 대기 (실행 방법: tigercat-ai/docs/STEP2.md)
+
 ## 1단계 진행 현황: 완료
 PowerShell · Node.js · npm · git · 저장소 clone · Claude Code(Pro) · Higgsfield MCP 연결 · ffmpeg · 채널 4개 개설
 
