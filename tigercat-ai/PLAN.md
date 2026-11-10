@@ -4,12 +4,15 @@
 > 시스템은 **내 Windows 컴퓨터에서만** 동작한다.
 
 ## v2 변경 사항 (대표 답변 반영)
+
+> **v2.1 추가:** Higgsfield MCP 연동 확인됨 (플랜 max, 크레딧 약 1,710 보유). 이미지·영상·음성 제작은 **Higgsfield를 기본**으로 쓰고, Google Gemini는 보조(대체)로 둡니다. 아래 표의 "Google" 관련 내용은 이 기준으로 읽어 주세요.
+
 | 항목 | 변경 |
 |------|------|
-| GPT | **사용 안 함.** 이미지 등 생성은 **Google(Gemini) API 키**로 대체 |
+| GPT | **사용 안 함.** 이미지·영상·음성 생성은 **Higgsfield MCP**, 보조로 Google(Gemini) API 키 |
 | 상품 판매 | **안 함.** 책·키링·옷·피규어 상품 업무 삭제 |
 | 사업 내용 | **YouTube / Instagram / Threads 운영 + 쇼츠·릴스 영상 제작** |
-| 비용 상한 | **Claude Pro 구독 한도 안에서만.** Google은 무료 한도 내 사용 |
+| 비용 상한 | **Claude Pro 구독 한도 안에서만.** Higgsfield는 보유 크레딧 안에서만(영상 생성 전 크레딧 견적 확인 + 대표 승인), Google은 무료 한도 내 |
 | 설치 현황 | Node.js, git, GitHub 있음. **PostgreSQL 없음 → SQLite로 대체** (설치 불필요, 파일 1개) |
 | OS | Windows (PowerShell 기준 안내) |
 
@@ -39,10 +42,11 @@ CEO (나)
 ### 쇼츠/릴스 제작 파이프라인
 ```
 주제 선정 → 대본 → 장면별 이미지(Gemini) → 음성(TTS) → 자막
-   → 영상 조립(ffmpeg, 9:16) → 검수 → CEO 승인 → YouTube / Instagram / Threads
+   → 영상 조립(ffmpeg, 9:16) 또는 Higgsfield 영상 생성 → 검수 → CEO 승인 → YouTube / Instagram / Threads
 ```
-- 기본 방식: **이미지 + 음성 + 자막 조합 영상** (무료 한도로 가능, 안정적)
-- 선택 방식: Google Veo 등 AI 영상 생성 모델 → 유료일 가능성이 커서 **비용 확인 후 대표 승인 시에만** 사용
+- 기본 방식(저비용): Higgsfield 이미지 + 음성 + 자막을 ffmpeg로 조립
+- 고품질 방식: **Higgsfield 영상 생성(Seedance 등)** — 크레딧을 쓰므로 **스토리보드 이미지 승인 → 크레딧 견적 → 대표 승인** 후에만 생성
+- Higgsfield에 쇼츠/설명영상용 작업 흐름이 있어 활용 가능 (9:16 쇼츠 등)
 
 ---
 
@@ -68,7 +72,7 @@ CEO (나)
 | 사이트 | React(Vite) + Node API | 이 저장소와 동일 구성 |
 | 메신저 | WebSocket | 실시간 대화 |
 | 두뇌 | **Claude Code (터미널 호출)** | Pro 구독 안에서 사용 |
-| 이미지/음성 | Google Gemini API (+ 필요 시 Google TTS) | 대표님이 선택한 Google |
+| 이미지/영상/음성 | **Higgsfield MCP** (보조: Google Gemini API) | 연동 완료, 크레딧 보유 |
 | 영상 조립 | ffmpeg | 무료, 로컬 실행 |
 | 버전관리 | git + GitHub | 설치됨 |
 
@@ -113,7 +117,8 @@ PLAN.md  apps/brand-site  apps/work-site  server/  agents/  db/  media-tools/  d
 2. 설치 확인: `node -v`, `git --version`
 3. 이 저장소 내려받기 (`git clone`)
 4. **Claude Code 로그인 확인** (Pro 구독)
-5. **Google AI Studio에서 Gemini API 키 발급** (aistudio.google.com) → `.env` 파일에 보관
+5. **내 컴퓨터의 Claude Code에도 Higgsfield MCP 연결** (지금 연동은 이 클라우드 세션 기준이라 로컬에서도 한 번 연결 필요 — 방법 안내)
+5-1. (보조) Google AI Studio Gemini API 키 발급 → `.env` 파일에 보관
 6. **ffmpeg 설치** (영상 조립용)
 7. 채널 계정 정리: YouTube 채널, Instagram(**프로페셔널 계정 + Facebook 페이지 연결** 필요), Threads
 8. 9단계 때: YouTube(Google Cloud 프로젝트·OAuth), Meta 개발자 앱(Instagram·Threads) 연동 — 가장 복잡해서 화면 보며 안내
@@ -125,7 +130,7 @@ PLAN.md  apps/brand-site  apps/work-site  server/  agents/  db/  media-tools/  d
 | 위험 | 대응 |
 |------|------|
 | Claude Pro 한도 소진 | §3 한도 관리 |
-| Google 무료 한도 초과/유료 전환 | 호출량 표시, 한도 도달 시 중단, AI 영상 모델은 승인제 |
+| Higgsfield 크레딧 소진 / Google 한도 초과 | 생성 전 견적 확인, 영상 생성은 승인제, 대시보드에 잔여 크레딧 표시 |
 | 자동 업로드 중 사고 | 업로드는 CEO 승인 필수, 처음엔 수동 업로드 |
 | 플랫폼 정책 (AI 생성물 표시, 저작권 음원/이미지, 스팸성 대량 업로드) | 검수담당 체크리스트, 상업 사용 가능한 소재만 사용 |
 | API 키 유출 | `.env`에만 저장, GitHub 업로드 금지 |
