@@ -43,3 +43,16 @@ npm run short1d
 - 크레딧 0, 1~3분 소요
 
 전환 종류는 `media/short1_dynamic.json` 의 `transitions` 로 바꿀 수 있습니다. (예: `["fade","circleopen","smoothleft","fade"]`)
+
+---
+
+## AI 영상 클립 버전 (캐릭터가 실제로 움직임)
+```
+npm run short1m
+```
+`media\out\short1_motion\short1_motion.mp4` 가 새로 생깁니다. (기존 두 파일은 그대로)
+
+- 장면 5개를 Kling 3.0으로 만든 5초 클립으로 사용 (크레딧은 이미 사용됨, 이 명령은 0)
+- 클립이 장면보다 짧으면 최대 1.5배까지 천천히 늘리고, 그래도 모자라면 마지막 화면을 잠시 멈춤
+- 장면 전환 효과 + 자막 효과는 동적 버전과 동일
+- 클립 주소는 `media/short1_motion.json` 의 `clips` 에 있음

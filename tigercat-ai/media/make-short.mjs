@@ -11,7 +11,7 @@ const cfg = JSON.parse(await readFile(cfgPath, 'utf8'));
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, 'out', cfg.name);
 const assets = join(here, 'out', cfg.assetsFrom || cfg.name, 'assets'); // assetsFrom: 다른 영상이 받아 둔 파일 재사용
-const style = cfg.style || 'static'; // static: 컷 전환 / dynamic: 카메라 움직임 + 전환 효과 + 자막 효과
+const style = cfg.style || 'static'; // static: 컷 전환 / dynamic: 카메라 움직임 + 전환 효과 + 자막 효과 / clips: AI 영상 클립 + 전환 효과 + 자막 효과
 await mkdir(assets, { recursive: true });
 await mkdir(out, { recursive: true });
 
@@ -27,8 +27,10 @@ async function fetchTo(url, file) {
   log('내려받음: ' + basename(file));
 }
 console.log('\n[1/4] 파일 내려받기');
-const imgFiles = cfg.images.map((_, i) => join(assets, `scene${i + 1}.png`));
-for (let i = 0; i < cfg.images.length; i++) await fetchTo(cfg.images[i], imgFiles[i]);
+const imgFiles = (cfg.images || []).map((_, i) => join(assets, `scene${i + 1}.png`));
+for (let i = 0; i < imgFiles.length; i++) await fetchTo(cfg.images[i], imgFiles[i]);
+const clipFiles = (cfg.clips || []).map((_, i) => join(assets, `clip${i + 1}.mp4`));
+for (let i = 0; i < clipFiles.length; i++) await fetchTo(cfg.clips[i], clipFiles[i]);
 await fetchTo(cfg.audio, join(assets, 'narration.mp3'));
 
 // ffmpeg / ffprobe 확인
@@ -80,7 +82,7 @@ console.log('\n[3/4] 자막 만들기');
 const font = process.env.CAPTION_FONT || (process.platform === 'win32' ? 'Consolas' : process.platform === 'darwin' ? 'Menlo' : 'DejaVu Sans Mono');
 const ts = (t) => { const c = Math.round(t * 100); const h = Math.floor(c / 360000), m = Math.floor((c % 360000) / 6000), s = Math.floor((c % 6000) / 100); return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(c % 100).padStart(2, '0')}`; };
 const red = new Set(cfg.redWords.map((w) => w.toUpperCase()));
-const pop = style === 'dynamic' ? '{\\fscx82\\fscy82\\t(0,170,\\fscx100\\fscy100)\\fad(110,90)}' : '';
+const pop = style !== 'static' ? '{\\fscx82\\fscy82\\t(0,170,\\fscx100\\fscy100)\\fad(110,90)}' : '';
 const styled = (text) => pop + text.toUpperCase().split(' ').map((w) => (red.has(w.replace(/[^A-Z']/g, '')) ? `{\\c&H303BFF&}${w}{\\c&HFFFFFF&}` : w)).join(' ');
 const ass = `[Script Info]
 ScriptType: v4.00+
@@ -105,7 +107,24 @@ const args = ['-y', '-hide_banner', '-loglevel', 'error', '-stats'];
 const n = cfg.scenes.length;
 const f = [];
 const T = 0.25; // 장면 전환 길이(초)
-if (style === 'dynamic') {
+if (style === 'clips') {
+  // AI 영상 클립: 장면 길이보다 짧으면 살짝 느리게(최대 1.5배) 늘리고, 그래도 모자라면 마지막 장면을 잠시 멈춘다. 길면 자른다.
+  const L = sceneDur.map((d, i) => d + (i < n - 1 ? T : 0));
+  cfg.scenes.forEach((s, i) => {
+    args.push('-i', clipFiles[s.clip ?? i]);
+    f.push(`[${i}:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1,setpts=PTS*${Math.min(1.5, Math.max(1, L[i] / (cfg.clipSeconds || 5)))}[s${i}]`);
+    f.push(`[s${i}]tpad=stop_mode=clone:stop_duration=${L[i].toFixed(3)},trim=duration=${L[i].toFixed(3)},setpts=PTS-STARTPTS,format=yuv420p[v${i}]`);
+  });
+  args.push('-i', audioPath);
+  const trans = cfg.transitions || ['fade', 'circleopen', 'smoothleft', 'fade'];
+  let acc = 0, prev = 'v0';
+  for (let i = 1; i < n; i++) {
+    acc += sceneDur[i - 1];
+    f.push(`[${prev}][v${i}]xfade=transition=${trans[(i - 1) % trans.length]}:duration=${T}:offset=${acc.toFixed(3)}[x${i}]`);
+    prev = `x${i}`;
+  }
+  f.push(`[${prev}]ass=captions.ass,fade=t=out:st=${(dur - 0.4).toFixed(2)}:d=0.4[vout]`);
+} else if (style === 'dynamic') {
   // 장면마다 카메라 움직임: 0 서서히 확대, 1 서서히 멀어짐, 2 반전 장면 밀고 들어감, 3 따라가며 이동, 4 멀어지며 마무리
   const L = sceneDur.map((d, i) => d + (i < n - 1 ? T : 0));
   const N = L.map((d) => Math.max(2, Math.round(d * 30)));
