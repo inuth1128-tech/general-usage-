@@ -28,3 +28,18 @@ explorer media\out\short1
 - 자막 글꼴이 이상함 → `$env:CAPTION_FONT="Arial"` 입력 후 다시 `npm run short1`
 - 다시 만들 때는 같은 명령을 한 번 더 실행 (내려받은 파일은 재사용)
 - 장면 이미지를 새로 만들었다면 `media\out\short1\assets` 폴더를 지우고 실행
+
+---
+
+## 동적인 버전 (추가 파일, 기존 영상은 그대로)
+```
+npm run short1d
+```
+`media\out\short1_dynamic\short1_dynamic.mp4` 가 새로 생깁니다. 기존 `short1.mp4` 는 건드리지 않습니다. (이미 받은 이미지·음성은 재사용하므로 `npm run short1` 을 먼저 했다면 바로 만들어집니다. 안 했어도 알아서 내려받습니다.)
+
+- 장면마다 카메라 움직임: 서서히 확대 → 멀어짐 → 반전 장면에서 밀고 들어감 → 따라가며 이동 → 멀어지며 마무리
+- 장면 전환 효과 (반전 장면은 원이 퍼지는 전환)
+- 자막이 톡 튀어나오며 나타남
+- 크레딧 0, 1~3분 소요
+
+전환 종류는 `media/short1_dynamic.json` 의 `transitions` 로 바꿀 수 있습니다. (예: `["fade","circleopen","smoothleft","fade"]`)

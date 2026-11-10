@@ -1,0 +1,62 @@
+{
+  "name": "short1_dynamic",
+  "title": "Start Before You're Ready",
+  "targetSeconds": 29.8,
+  "redWords": [
+    "NEVER",
+    "START"
+  ],
+  "images": [
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_155956_92dbe47d-59dd-4e16-836e-6c07ff8d0350.png",
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_155958_13d56fd5-e98d-4823-96b8-0c1c760e42d1.png",
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_160001_c0a54ea0-e04a-4035-b046-d66c93b1a915.png",
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_160002_b7ea257b-2013-4b0c-8843-26dd648f8eb0.png",
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_160006_3b608afd-a2ac-4226-8e74-d62d50fbb355.png"
+  ],
+  "audio": "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_160545_2965a738-7b5d-4b4b-9b71-c2cf2de4e030.mp3",
+  "scenes": [
+    {
+      "image": 0,
+      "sentences": [
+        "You will never feel ready."
+      ]
+    },
+    {
+      "image": 1,
+      "sentences": [
+        "You wait for the perfect plan.",
+        "The perfect time.",
+        "The perfect version of you.",
+        "Months pass.",
+        "Nothing starts."
+      ]
+    },
+    {
+      "image": 2,
+      "sentences": [
+        "Here's the secret.",
+        "Nobody feels ready.",
+        "The ones who win just move first.",
+        "They are scared too."
+      ]
+    },
+    {
+      "image": 3,
+      "sentences": [
+        "Ready is a feeling.",
+        "Start is a decision.",
+        "So start before you are ready."
+      ]
+    },
+    {
+      "image": 4,
+      "sentences": [
+        "Take one step.",
+        "Right now.",
+        "Follow Tigercat AI for more."
+      ]
+    }
+  ],
+  "assetsFrom": "short1",
+  "style": "dynamic"
+}
