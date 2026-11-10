@@ -63,7 +63,8 @@
 | Threads | tigercatai.official 로 가입 (Instagram 계정 연동) | 완료 |
 
 ## 진행 현황
-- 2단계(뼈대): 코드 완성 — 대표 확인 대기 (실행 방법: tigercat-ai/docs/STEP2.md)
+- 2단계(뼈대): 완료 (대표 컴퓨터에서 확인됨)
+- 3단계(비서실장 가동): 코드 완성 — 대표 확인 대기 (실행 방법: tigercat-ai/docs/STEP3.md)
 
 ## 1단계 진행 현황: 완료
 PowerShell · Node.js · npm · git · 저장소 clone · Claude Code(Pro) · Higgsfield MCP 연결 · ffmpeg · 채널 4개 개설

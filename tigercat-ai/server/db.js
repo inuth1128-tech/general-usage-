@@ -54,6 +54,16 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Claude 호출 기록 (Pro 한도 관리용)
+CREATE TABLE IF NOT EXISTS usage_log (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  employee_id TEXT,
+  task_id     INTEGER,
+  ok          INTEGER NOT NULL DEFAULT 1,
+  duration_ms INTEGER,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+);
+
 -- 기억 시스템: 했던 일, 성공/실패, 배운 점
 CREATE TABLE IF NOT EXISTS memories (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,

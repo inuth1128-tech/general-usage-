@@ -31,16 +31,36 @@
   .tag { display:inline-block; font-size:12px; color:var(--mute); border:1px solid var(--line); border-radius:999px; padding:1px 9px; margin:8px 6px 0 0; }
   .note { margin-top:30px; color:var(--mute); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
   #err { color:var(--red); }
+  textarea { width:100%; min-height:90px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:12px; font:inherit; resize:vertical; }
+  button { background:var(--red); color:#fff; border:0; border-radius:10px; padding:10px 20px; font:inherit; font-weight:700; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .row { display:flex; align-items:center; gap:14px; margin-top:10px; flex-wrap:wrap; }
+  .usage { color:var(--mute); font-size:13px; }
+  .task { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px; }
+  .task .head { display:flex; justify-content:space-between; gap:10px; color:var(--mute); font-size:13px; }
+  .task .ins { font-weight:700; margin:6px 0; }
+  .task pre { white-space:pre-wrap; word-break:break-word; margin:8px 0 0; font:inherit; color:#d8d8d8; border-top:1px solid var(--line); padding-top:10px; }
+  .st-working, .st-requested { color:#ffcc00; } .st-reported { color:#34c759; } .st-failed { color:var(--red); }
 </style>
 </head>
 <body>
 <header>
   <h1>tigercat<span>-ai</span> 업무사이트</h1>
-  <div class="sub">2단계: 뼈대 — 직원 명부와 조직도 (내 컴퓨터에서만 열립니다)</div>
+  <div class="sub">3단계: 비서실장 가동 — 지시를 내리면 한비서가 정리해서 보고합니다 (내 컴퓨터에서만 열립니다)</div>
 </header>
 <main>
   <div id="err"></div>
   <div class="stats" id="stats"></div>
+
+  <h2>비서실장에게 지시하기</h2>
+  <textarea id="ins" placeholder="예) 첫 번째 쇼츠 주제 3개를 제안해 줘. 주제는 '실패해도 계속하는 이유' 같은 동기부여로."></textarea>
+  <div class="row">
+    <button id="send">지시 보내기</button>
+    <span class="usage" id="usage"></span>
+  </div>
+
+  <h2>업무 기록</h2>
+  <div id="tasks"></div>
 
   <h2>조직도</h2>
   <div class="ceo">
@@ -55,13 +75,41 @@
   <div class="grid" id="grid"></div>
 
   <div class="note">
-    다음 단계(3단계)에서 비서실장에게 지시를 내리는 입력창과 진행 과정 화면이 이 자리에 추가됩니다.
+    다음 단계(4단계)에서 담당자 직원들이 실제로 일하고, 5단계에서 회의와 메신저가 추가됩니다.
   </div>
 </main>
 <script>
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 async function get(path) { const r = await fetch(path); if (!r.ok) throw new Error(path + ' ' + r.status); return r.json(); }
+
+const STATUS = { requested: '접수됨', working: '처리 중…', reported: '보고 완료', failed: '실패' };
+async function refreshTasks() {
+  const [tasks, sum] = await Promise.all([get('/api/tasks'), get('/api/summary')]);
+  $('usage').textContent = `오늘 Claude 호출 ${sum.usage.used} / ${sum.usage.limit}회`;
+  $('tasks').innerHTML = tasks.length ? tasks.map((t) => `
+    <div class="task">
+      <div class="head"><span>#${t.id} · ${esc(t.created_at)}</span><span class="st-${esc(t.status)}">${STATUS[t.status] || esc(t.status)}</span></div>
+      <div class="ins">${esc(t.instruction)}</div>
+      ${t.result ? `<pre>${esc(t.result)}</pre>` : ''}
+    </div>`).join('') : '<div class="usage">아직 지시한 업무가 없습니다.</div>';
+  return tasks.some((t) => t.status === 'working' || t.status === 'requested');
+}
+let timer = null;
+async function poll() {
+  try { const running = await refreshTasks(); clearTimeout(timer); if (running) timer = setTimeout(poll, 2500); else $('send').disabled = false; } catch (e) { $('err').textContent = e.message; }
+}
+$('send').onclick = async () => {
+  const instruction = $('ins').value.trim();
+  if (!instruction) return;
+  $('send').disabled = true; $('err').textContent = '';
+  const r = await fetch('/api/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ instruction }) });
+  const j = await r.json();
+  if (!r.ok) { $('err').textContent = j.error; $('send').disabled = false; return; }
+  $('ins').value = '';
+  poll();
+};
+poll();
 
 (async () => {
   try {
