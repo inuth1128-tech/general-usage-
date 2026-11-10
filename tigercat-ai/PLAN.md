@@ -52,6 +52,21 @@
 
 ---
 
+## 채널 계정 현황 (비밀번호는 기록하지 않음)
+
+| 채널 | 이름/핸들 | 상태 |
+|------|----------|------|
+| Google | tigercatai.official@gmail.com | 완료 |
+| YouTube | Tigercat AI (@tigercat_ai) | 완료 |
+| Facebook 페이지 | Tigercat AI | 완료 |
+| Instagram | tigercatai.official (프로페셔널 계정) | 완료 · Facebook 페이지 연결은 9단계에서 |
+| Threads | tigercatai.official 로 가입 (Instagram 계정 연동) | 완료 |
+
+## 1단계 진행 현황: 완료
+PowerShell · Node.js · npm · git · 저장소 clone · Claude Code(Pro) · Higgsfield MCP 연결 · ffmpeg · 채널 4개 개설
+
+---
+
 ## 1. 회사 구조
 
 ```
