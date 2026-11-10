@@ -1,0 +1,3020 @@
+{
+  "nodes": [
+    {
+      "id": "g0",
+      "type": "group",
+      "label": "package.json Dependencies",
+      "x": 0,
+      "y": 0,
+      "width": 1320,
+      "height": 720,
+      "color": "1"
+    },
+    {
+      "id": "n_ref_types_node",
+      "type": "file",
+      "file": "@typesnode.md",
+      "x": 20,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_types_node",
+      "type": "file",
+      "file": "@typesnode@24.19.2.md",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_types_react",
+      "type": "file",
+      "file": "@typesreact.md",
+      "x": 420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_types_react_dom",
+      "type": "file",
+      "file": "@typesreact-dom.md",
+      "x": 620,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_types_react_dom",
+      "type": "file",
+      "file": "@typesreact-dom@19.3.0.md",
+      "x": 820,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_types_react",
+      "type": "file",
+      "file": "@typesreact@19.3.0.md",
+      "x": 1020,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_vitejs_plugin_react",
+      "type": "file",
+      "file": "@vitejsplugin-react.md",
+      "x": 20,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_vitejs_plugin_react",
+      "type": "file",
+      "file": "@vitejsplugin-react@6.1.2.md",
+      "x": 220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_app_app",
+      "type": "file",
+      "file": "App().md",
+      "x": 420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_app",
+      "type": "file",
+      "file": "App.tsx.md",
+      "x": 620,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_dependencies",
+      "type": "file",
+      "file": "dependencies.md",
+      "x": 820,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies",
+      "type": "file",
+      "file": "devDependencies.md",
+      "x": 1020,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_framer_motion",
+      "type": "file",
+      "file": "framer-motion.md",
+      "x": 20,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_dependencies_framer_motion",
+      "type": "file",
+      "file": "framer-motion@14.6.0.md",
+      "x": 220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_main",
+      "type": "file",
+      "file": "main.tsx.md",
+      "x": 420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_name",
+      "type": "file",
+      "file": "name.md",
+      "x": 620,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_oxlint",
+      "type": "file",
+      "file": "oxlint.md",
+      "x": 820,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_oxlint",
+      "type": "file",
+      "file": "oxlint@1.88.0.md",
+      "x": 1020,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package",
+      "type": "file",
+      "file": "package.json.md",
+      "x": 20,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_private",
+      "type": "file",
+      "file": "private.md",
+      "x": 220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_react",
+      "type": "file",
+      "file": "react.md",
+      "x": 420,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_react_dom",
+      "type": "file",
+      "file": "react-dom.md",
+      "x": 620,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_dependencies_react_dom",
+      "type": "file",
+      "file": "react-dom@19.3.1.md",
+      "x": 820,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_dependencies_react",
+      "type": "file",
+      "file": "react@19.3.1.md",
+      "x": 1020,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_index",
+      "type": "file",
+      "file": "src_index.md",
+      "x": 20,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_type",
+      "type": "file",
+      "file": "type.md",
+      "x": 220,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_typescript",
+      "type": "file",
+      "file": "typescript.md",
+      "x": 420,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_typescript",
+      "type": "file",
+      "file": "typescript@~6.0.3.md",
+      "x": 620,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_version",
+      "type": "file",
+      "file": "version.md",
+      "x": 820,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ref_vite",
+      "type": "file",
+      "file": "vite.md",
+      "x": 1020,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_vite_config",
+      "type": "file",
+      "file": "vite.config.ts.md",
+      "x": 20,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_devdependencies_vite",
+      "type": "file",
+      "file": "vite@8.3.4.md",
+      "x": 220,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g1",
+      "type": "group",
+      "label": "Analysis & Race Simulation",
+      "x": 1400,
+      "y": 0,
+      "width": 1100,
+      "height": 620,
+      "color": "2"
+    },
+    {
+      "id": "n_kronos_tools_analysis_rationale_1",
+      "type": "file",
+      "file": "Model-independent analysis of simulated price paths (pure numpy)..md",
+      "x": 1420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_rationale_44",
+      "type": "file",
+      "file": "Real outcomes after each past signal (entry = signal candle's close)..md",
+      "x": 1620,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_rationale_18",
+      "type": "file",
+      "file": "Resample (close return, high, low) tuples in blocks, so volatility clustering\u2026.md",
+      "x": 1820,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_rationale_1",
+      "type": "file",
+      "file": "Sample many Kronos paths, check calibration, race paths to stoptarget. Run on\u2026.md",
+      "x": 2020,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_rationale_1",
+      "type": "file",
+      "file": "Second opinion that does NOT use Kronos replay the stock's own history. 1.\u2026.md",
+      "x": 2220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_rationale_38",
+      "type": "file",
+      "file": "Setup = close above the highest high of the previous n candles. Replace with\u2026.md",
+      "x": 1420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_rationale_63",
+      "type": "file",
+      "file": "Trade only if every source favors the target by at least min_edge percentage\u2026.md",
+      "x": 1620,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_analysis_rationale_15",
+      "type": "file",
+      "file": "Which level does each path touch first highlow_paths (n_paths, horizon). If\u2026.md",
+      "x": 1820,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_analysis",
+      "type": "file",
+      "file": "analysis.py.md",
+      "x": 2020,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_argparse",
+      "type": "file",
+      "file": "argparse.md",
+      "x": 2220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_bootstrap_paths",
+      "type": "file",
+      "file": "bootstrap_paths().md",
+      "x": 1420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_breakout_signals",
+      "type": "file",
+      "file": "breakout_signals().md",
+      "x": 1620,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_analysis_rationale_6",
+      "type": "file",
+      "file": "close_paths (n_paths, horizon); actual_close (horizon,). Fraction of steps\u2026.md",
+      "x": 1820,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_analysis_coverage",
+      "type": "file",
+      "file": "coverage().md",
+      "x": 2020,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_historical_analogs",
+      "type": "file",
+      "file": "historical_analogs().md",
+      "x": 2220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_levels",
+      "type": "file",
+      "file": "levels().md",
+      "x": 1420,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_main",
+      "type": "file",
+      "file": "main().md",
+      "x": 1620,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_main",
+      "type": "file",
+      "file": "main()_1.md",
+      "x": 1820,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_ndarray",
+      "type": "file",
+      "file": "ndarray.md",
+      "x": 2020,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_numpy",
+      "type": "file",
+      "file": "numpy.md",
+      "x": 2220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_analysis_race",
+      "type": "file",
+      "file": "race().md",
+      "x": 1420,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos",
+      "type": "file",
+      "file": "run_kronos.py.md",
+      "x": 1620,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine",
+      "type": "file",
+      "file": "timemachine.py.md",
+      "x": 1820,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_timemachine_verdict",
+      "type": "file",
+      "file": "verdict().md",
+      "x": 2020,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g2",
+      "type": "group",
+      "label": "tsconfig.app Options",
+      "x": 2580,
+      "y": 0,
+      "width": 1100,
+      "height": 520,
+      "color": "3"
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_allowarbitraryextensions",
+      "type": "file",
+      "file": "allowArbitraryExtensions.md",
+      "x": 2600,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_allowimportingtsextensions",
+      "type": "file",
+      "file": "allowImportingTsExtensions.md",
+      "x": 2800,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions",
+      "type": "file",
+      "file": "compilerOptions.md",
+      "x": 3000,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_erasablesyntaxonly",
+      "type": "file",
+      "file": "erasableSyntaxOnly.md",
+      "x": 3200,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_include",
+      "type": "file",
+      "file": "include.md",
+      "x": 3400,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_jsx",
+      "type": "file",
+      "file": "jsx.md",
+      "x": 2600,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_lib",
+      "type": "file",
+      "file": "lib.md",
+      "x": 2800,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_module",
+      "type": "file",
+      "file": "module.md",
+      "x": 3000,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_moduledetection",
+      "type": "file",
+      "file": "moduleDetection.md",
+      "x": 3200,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_moduleresolution",
+      "type": "file",
+      "file": "moduleResolution.md",
+      "x": 3400,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_noemit",
+      "type": "file",
+      "file": "noEmit.md",
+      "x": 2600,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "type": "file",
+      "file": "noFallthroughCasesInSwitch.md",
+      "x": 2800,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_nounusedlocals",
+      "type": "file",
+      "file": "noUnusedLocals.md",
+      "x": 3000,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_nounusedparameters",
+      "type": "file",
+      "file": "noUnusedParameters.md",
+      "x": 3200,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_skiplibcheck",
+      "type": "file",
+      "file": "skipLibCheck.md",
+      "x": 3400,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_target",
+      "type": "file",
+      "file": "target.md",
+      "x": 2600,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_tsbuildinfofile",
+      "type": "file",
+      "file": "tsBuildInfoFile.md",
+      "x": 2800,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app",
+      "type": "file",
+      "file": "tsconfig.app.json.md",
+      "x": 3000,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_types",
+      "type": "file",
+      "file": "types.md",
+      "x": 3200,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "type": "file",
+      "file": "verbatimModuleSyntax.md",
+      "x": 3400,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g3",
+      "type": "group",
+      "label": "tsconfig.node Options",
+      "x": 3760,
+      "y": 0,
+      "width": 1100,
+      "height": 520,
+      "color": "4"
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_allowimportingtsextensions",
+      "type": "file",
+      "file": "allowImportingTsExtensions_1.md",
+      "x": 3780,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions",
+      "type": "file",
+      "file": "compilerOptions_1.md",
+      "x": 3980,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_erasablesyntaxonly",
+      "type": "file",
+      "file": "erasableSyntaxOnly_1.md",
+      "x": 4180,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_include",
+      "type": "file",
+      "file": "include_1.md",
+      "x": 4380,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_lib",
+      "type": "file",
+      "file": "lib_1.md",
+      "x": 4580,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_module",
+      "type": "file",
+      "file": "module_1.md",
+      "x": 3780,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_moduledetection",
+      "type": "file",
+      "file": "moduleDetection_1.md",
+      "x": 3980,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_noemit",
+      "type": "file",
+      "file": "noEmit_1.md",
+      "x": 4180,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_nofallthroughcasesinswitch",
+      "type": "file",
+      "file": "noFallthroughCasesInSwitch_1.md",
+      "x": 4380,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_nounusedlocals",
+      "type": "file",
+      "file": "noUnusedLocals_1.md",
+      "x": 4580,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_nounusedparameters",
+      "type": "file",
+      "file": "noUnusedParameters_1.md",
+      "x": 3780,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_skiplibcheck",
+      "type": "file",
+      "file": "skipLibCheck_1.md",
+      "x": 3980,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_target",
+      "type": "file",
+      "file": "target_1.md",
+      "x": 4180,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_tsbuildinfofile",
+      "type": "file",
+      "file": "tsBuildInfoFile_1.md",
+      "x": 4380,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node",
+      "type": "file",
+      "file": "tsconfig.node.json.md",
+      "x": 4580,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_types",
+      "type": "file",
+      "file": "types_1.md",
+      "x": 3780,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_node_compileroptions_verbatimmodulesyntax",
+      "type": "file",
+      "file": "verbatimModuleSyntax_1.md",
+      "x": 3980,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g4",
+      "type": "group",
+      "label": "News Gate",
+      "x": 0,
+      "y": 800,
+      "width": 880,
+      "height": 520,
+      "color": "5"
+    },
+    {
+      "id": "n_kronos_tools_news_rationale_32",
+      "type": "file",
+      "file": "- list of dict(title, country, impact, time(utc aware), forecast, previous)..md",
+      "x": 20,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_rationale_49",
+      "type": "file",
+      "file": "Events whose time - before, time + after window contains `now`; plus the next\u2026.md",
+      "x": 220,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_rationale_1",
+      "type": "file",
+      "file": "Gold news check scheduled high-impact USD events (blackout window) + headline\u2026.md",
+      "x": 420,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_blackout",
+      "type": "file",
+      "file": "blackout().md",
+      "x": 620,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_datetime",
+      "type": "file",
+      "file": "datetime.md",
+      "x": 20,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_fetch",
+      "type": "file",
+      "file": "fetch().md",
+      "x": 220,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_gold_events",
+      "type": "file",
+      "file": "gold_events().md",
+      "x": 420,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_json",
+      "type": "file",
+      "file": "json.md",
+      "x": 620,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_main",
+      "type": "file",
+      "file": "main()_2.md",
+      "x": 20,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news",
+      "type": "file",
+      "file": "news.py.md",
+      "x": 220,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_parse_events",
+      "type": "file",
+      "file": "parse_events().md",
+      "x": 420,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_parse_headlines",
+      "type": "file",
+      "file": "parse_headlines().md",
+      "x": 620,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_news_tone",
+      "type": "file",
+      "file": "tone().md",
+      "x": 20,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_urllib_parse",
+      "type": "file",
+      "file": "urllib_parse.md",
+      "x": 220,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_urllib_request",
+      "type": "file",
+      "file": "urllib_request.md",
+      "x": 420,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_xml_etree_elementtree",
+      "type": "file",
+      "file": "xml_etree_elementtree.md",
+      "x": 620,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g5",
+      "type": "group",
+      "label": "Scanner & Sampling",
+      "x": 1400,
+      "y": 800,
+      "width": 880,
+      "height": 520,
+      "color": "6"
+    },
+    {
+      "id": "n_kronos_tools_scanner_rationale_50",
+      "type": "file",
+      "file": "Crude activity score 0-100 expansion in volatility, volume, a fresh breakout,\u2026.md",
+      "x": 1420,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_rationale_32",
+      "type": "file",
+      "file": "Metrics for the latest candle of one instrument..md",
+      "x": 1620,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_rationale_1",
+      "type": "file",
+      "file": "Rank instruments by what is moving right now (volatility, volume, breakout,\u2026.md",
+      "x": 1820,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_atr",
+      "type": "file",
+      "file": "atr().md",
+      "x": 2020,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_features",
+      "type": "file",
+      "file": "features().md",
+      "x": 1420,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_future_ts",
+      "type": "file",
+      "file": "future_ts().md",
+      "x": 1620,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_load_mt5",
+      "type": "file",
+      "file": "load_mt5().md",
+      "x": 1820,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_pandas",
+      "type": "file",
+      "file": "pandas.md",
+      "x": 2020,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_rsi",
+      "type": "file",
+      "file": "rsi().md",
+      "x": 1420,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_main_run_at",
+      "type": "file",
+      "file": "run_at().md",
+      "x": 1620,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_rationale_16",
+      "type": "file",
+      "file": "sample_count1 would AVERAGE paths, so use sample_count=1 on n_paths copies..md",
+      "x": 1820,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_run_kronos_sample_paths",
+      "type": "file",
+      "file": "sample_paths().md",
+      "x": 2020,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_scan",
+      "type": "file",
+      "file": "scan().md",
+      "x": 1420,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner",
+      "type": "file",
+      "file": "scanner.py.md",
+      "x": 1620,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_scanner_score",
+      "type": "file",
+      "file": "score().md",
+      "x": 1820,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g6",
+      "type": "group",
+      "label": "Kronos Trading README",
+      "x": 2580,
+      "y": 800,
+      "width": 880,
+      "height": 520,
+      "color": "1"
+    },
+    {
+      "id": "n_kronos_tools_readme_budget_risk",
+      "type": "file",
+      "file": "Budget and risk step.md",
+      "x": 2600,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_csv_format",
+      "type": "file",
+      "file": "CSV data format.md",
+      "x": 2800,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_kronos_model",
+      "type": "file",
+      "file": "Kronos model.md",
+      "x": 3000,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_calibration_race",
+      "type": "file",
+      "file": "Kronos paths, calibration and race.md",
+      "x": 3200,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_metatrader5",
+      "type": "file",
+      "file": "MetaTrader 5 (demo account only).md",
+      "x": 2600,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_news_gate",
+      "type": "file",
+      "file": "News gate (blackout).md",
+      "x": 2800,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_race_counting",
+      "type": "file",
+      "file": "Race counting rule (ties count as stop).md",
+      "x": 3000,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_scan",
+      "type": "file",
+      "file": "Scan step.md",
+      "x": 3200,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_send_demo",
+      "type": "file",
+      "file": "Send to demo step.md",
+      "x": 2600,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_setup",
+      "type": "file",
+      "file": "Setup.md",
+      "x": 2800,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_workflow",
+      "type": "file",
+      "file": "Six-step trading research workflow.md",
+      "x": 3000,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_status",
+      "type": "file",
+      "file": "Tested vs untested status.md",
+      "x": 3200,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_time_machine",
+      "type": "file",
+      "file": "Time machine second opinion.md",
+      "x": 2600,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_readme_overview",
+      "type": "file",
+      "file": "kronos_tools Overview (Kronos XAUUSD research scripts).md",
+      "x": 2800,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g7",
+      "type": "group",
+      "label": "MT5 Broker Order",
+      "x": 3760,
+      "y": 800,
+      "width": 880,
+      "height": 420,
+      "color": "2"
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_rationale_31",
+      "type": "file",
+      "file": "Return a list of problems (empty = ok)..md",
+      "x": 3780,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_rationale_66",
+      "type": "file",
+      "file": "Returns a short status string. mt5 and IO are injected so the flow is testable..md",
+      "x": 3980,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_rationale_1",
+      "type": "file",
+      "file": "Send ONE reviewed XAUUSD market order to a MetaTrader 5 DEMO account. Safety\u2026.md",
+      "x": 4180,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5",
+      "type": "file",
+      "file": "broker_mt5.py.md",
+      "x": 4380,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_build_request",
+      "type": "file",
+      "file": "build_request().md",
+      "x": 3780,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_metatrader5",
+      "type": "file",
+      "file": "metatrader5.md",
+      "x": 3980,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_os",
+      "type": "file",
+      "file": "os.md",
+      "x": 4180,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_parse",
+      "type": "file",
+      "file": "parse().md",
+      "x": 4380,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_pick_filling",
+      "type": "file",
+      "file": "pick_filling().md",
+      "x": 3780,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_run",
+      "type": "file",
+      "file": "run().md",
+      "x": 3980,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_sys",
+      "type": "file",
+      "file": "sys.md",
+      "x": 4180,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_broker_mt5_validate",
+      "type": "file",
+      "file": "validate().md",
+      "x": 4380,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g8",
+      "type": "group",
+      "label": "Budget & Risk Sizing",
+      "x": 0,
+      "y": 1400,
+      "width": 880,
+      "height": 420,
+      "color": "3"
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_rationale_1",
+      "type": "file",
+      "file": "Budget + risk sizing for XAUUSD (spot gold). Pure arithmetic, never talks to a\u2026.md",
+      "x": 20,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_rationale_57",
+      "type": "file",
+      "file": "EV in $ from outcome frequencies (e.g. timemachineKronos target% and stop%).\u2026.md",
+      "x": 220,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_rationale_16",
+      "type": "file",
+      "file": "Lots sized so that a stop-out (price move + spread + commission) loses =\u2026.md",
+      "x": 420,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk",
+      "type": "file",
+      "file": "budget_risk.py.md",
+      "x": 620,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_checks",
+      "type": "file",
+      "file": "checks().md",
+      "x": 20,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_expected_value",
+      "type": "file",
+      "file": "expected_value().md",
+      "x": 220,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_main",
+      "type": "file",
+      "file": "main()_3.md",
+      "x": 420,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_math",
+      "type": "file",
+      "file": "math.md",
+      "x": 620,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_size_position",
+      "type": "file",
+      "file": "size_position().md",
+      "x": 20,
+      "y": 1640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_kronos_tools_budget_risk_ticket",
+      "type": "file",
+      "file": "ticket().md",
+      "x": 220,
+      "y": 1640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g9",
+      "type": "group",
+      "label": "Vite React Template",
+      "x": 1400,
+      "y": 1400,
+      "width": 660,
+      "height": 420,
+      "color": "4"
+    },
+    {
+      "id": "n_readme_vitejs_plugin_react",
+      "type": "file",
+      "file": "@vitejsplugin-react (Oxc).md",
+      "x": 1420,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_readme_vitejs_plugin_react_swc",
+      "type": "file",
+      "file": "@vitejsplugin-react-swc (SWC).md",
+      "x": 1620,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_readme_oxlint_configuration",
+      "type": "file",
+      "file": "Oxlint Configuration.md",
+      "x": 1820,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_readme_react_typescript_vite",
+      "type": "file",
+      "file": "React + TypeScript + Vite Template.md",
+      "x": 1420,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_readme_react_compiler",
+      "type": "file",
+      "file": "React Compiler.md",
+      "x": 1620,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_index_html_entry",
+      "type": "file",
+      "file": "index.html App Entry Page.md",
+      "x": 1820,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_index_root_div",
+      "type": "file",
+      "file": "root div mount point.md",
+      "x": 1420,
+      "y": 1640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_index_src_main_tsx",
+      "type": "file",
+      "file": "srcmain.tsx module entry.md",
+      "x": 1620,
+      "y": 1640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g10",
+      "type": "group",
+      "label": "Oxlint Config",
+      "x": 2580,
+      "y": 1400,
+      "width": 660,
+      "height": 400,
+      "color": "5"
+    },
+    {
+      "id": "n_oxlintrc_schema",
+      "type": "file",
+      "file": "$schema.md",
+      "x": 2600,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_oxlintrc",
+      "type": "file",
+      "file": "dot-oxlintrc.json.md",
+      "x": 2800,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_oxlintrc_plugins",
+      "type": "file",
+      "file": "plugins.md",
+      "x": 3000,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_oxlintrc_rules_react_only_export_components",
+      "type": "file",
+      "file": "reactonly-export-components.md",
+      "x": 2600,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_oxlintrc_rules_react_rules_of_hooks",
+      "type": "file",
+      "file": "reactrules-of-hooks.md",
+      "x": 2800,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_oxlintrc_rules",
+      "type": "file",
+      "file": "rules.md",
+      "x": 3000,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g11",
+      "type": "group",
+      "label": "npm Scripts",
+      "x": 3760,
+      "y": 1400,
+      "width": 660,
+      "height": 400,
+      "color": "6"
+    },
+    {
+      "id": "n_package_scripts_build",
+      "type": "file",
+      "file": "build.md",
+      "x": 3780,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_scripts_dev",
+      "type": "file",
+      "file": "dev.md",
+      "x": 3980,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_scripts_lint",
+      "type": "file",
+      "file": "lint.md",
+      "x": 4180,
+      "y": 1480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_scripts_preview",
+      "type": "file",
+      "file": "preview.md",
+      "x": 3780,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_package_scripts",
+      "type": "file",
+      "file": "scripts.md",
+      "x": 3980,
+      "y": 1560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g12",
+      "type": "group",
+      "label": "Hero Illustration",
+      "x": 0,
+      "y": 1900,
+      "width": 600,
+      "height": 400,
+      "color": "1"
+    },
+    {
+      "id": "n_src_assets_hero",
+      "type": "file",
+      "file": "Hero illustration two stacked isometric layers.md",
+      "x": 20,
+      "y": 1980,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_assets_hero_layered_stack_metaphor",
+      "type": "file",
+      "file": "Layered stack  abstraction layers metaphor.md",
+      "x": 220,
+      "y": 1980,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_assets_hero_top_layer",
+      "type": "file",
+      "file": "Outlined white top slab (wireframe style).md",
+      "x": 20,
+      "y": 2060,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_src_assets_hero_bottom_layer",
+      "type": "file",
+      "file": "Purple-glowing bottom slab.md",
+      "x": 220,
+      "y": 2060,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g13",
+      "type": "group",
+      "label": "tsconfig Root",
+      "x": 1400,
+      "y": 1900,
+      "width": 600,
+      "height": 400,
+      "color": "2"
+    },
+    {
+      "id": "n_tsconfig_files",
+      "type": "file",
+      "file": "files.md",
+      "x": 1420,
+      "y": 1980,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig_references",
+      "type": "file",
+      "file": "references.md",
+      "x": 1620,
+      "y": 1980,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tsconfig",
+      "type": "file",
+      "file": "tsconfig.json.md",
+      "x": 1420,
+      "y": 2060,
+      "width": 180,
+      "height": 60
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_src_main_src_app_app",
+      "fromNode": "n_src_main",
+      "toNode": "n_src_app_app",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_src_app_src_app_app",
+      "fromNode": "n_src_app",
+      "toNode": "n_src_app_app",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_coverage_numpy",
+      "fromNode": "n_kronos_tools_analysis_coverage",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_kronos_tools_analysis_coverage",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_kronos_tools_analysis_coverage",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_analysis_coverage",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_analysis_coverage",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_coverage_ndarray",
+      "fromNode": "n_kronos_tools_analysis_coverage",
+      "toNode": "n_ndarray",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_kronos_tools_analysis_coverage",
+      "fromNode": "n_kronos_tools_analysis",
+      "toNode": "n_kronos_tools_analysis_coverage",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_rationale_6_kronos_tools_analysis_coverage",
+      "fromNode": "n_kronos_tools_analysis_rationale_6",
+      "toNode": "n_kronos_tools_analysis_coverage",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_race_numpy",
+      "fromNode": "n_kronos_tools_analysis_race",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_analysis",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_rationale_15_kronos_tools_analysis_race",
+      "fromNode": "n_kronos_tools_analysis_rationale_15",
+      "toNode": "n_kronos_tools_analysis_race",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_argparse",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_argparse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_pandas",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_numpy",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_kronos_tools_run_kronos_main_run_at",
+      "fromNode": "n_kronos_tools_run_kronos_main",
+      "toNode": "n_kronos_tools_run_kronos_main_run_at",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_run_kronos_main",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_run_kronos_main",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_bootstrap_paths_numpy",
+      "fromNode": "n_kronos_tools_timemachine_bootstrap_paths",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_timemachine_bootstrap_paths",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_timemachine_bootstrap_paths",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_bootstrap_paths",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_bootstrap_paths",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_rationale_18_kronos_tools_timemachine_bootstrap_paths",
+      "fromNode": "n_kronos_tools_timemachine_rationale_18",
+      "toNode": "n_kronos_tools_timemachine_bootstrap_paths",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_breakout_signals_numpy",
+      "fromNode": "n_kronos_tools_timemachine_breakout_signals",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_timemachine_breakout_signals",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_timemachine_breakout_signals",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_breakout_signals",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_breakout_signals",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_rationale_38_kronos_tools_timemachine_breakout_signals",
+      "fromNode": "n_kronos_tools_timemachine_rationale_38",
+      "toNode": "n_kronos_tools_timemachine_breakout_signals",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_historical_analogs_numpy",
+      "fromNode": "n_kronos_tools_timemachine_historical_analogs",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_timemachine_historical_analogs",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_timemachine_historical_analogs",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_historical_analogs",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_historical_analogs",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_rationale_44_kronos_tools_timemachine_historical_analogs",
+      "fromNode": "n_kronos_tools_timemachine_rationale_44",
+      "toNode": "n_kronos_tools_timemachine_historical_analogs",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_timemachine_levels",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_timemachine_levels",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_levels",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_levels",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_numpy",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_kronos_tools_timemachine_verdict",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_kronos_tools_timemachine_verdict",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_argparse",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_argparse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_main_pandas",
+      "fromNode": "n_kronos_tools_timemachine_main",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_main",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_main",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_timemachine_verdict",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_timemachine_verdict",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_rationale_63_kronos_tools_timemachine_verdict",
+      "fromNode": "n_kronos_tools_timemachine_rationale_63",
+      "toNode": "n_kronos_tools_timemachine_verdict",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_blackout",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_blackout",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_blackout",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_blackout",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_rationale_49_kronos_tools_news_blackout",
+      "fromNode": "n_kronos_tools_news_rationale_49",
+      "toNode": "n_kronos_tools_news_blackout",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_fetch",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_fetch",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_fetch",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_fetch",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_gold_events",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_gold_events",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_gold_events",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_gold_events",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_argparse",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_argparse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_parse_events",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_parse_events",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_parse_headlines",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_parse_headlines",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_main_kronos_tools_news_tone",
+      "fromNode": "n_kronos_tools_news_main",
+      "toNode": "n_kronos_tools_news_tone",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_main",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_main",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_parse_events_json",
+      "fromNode": "n_kronos_tools_news_parse_events",
+      "toNode": "n_json",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_parse_events",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_parse_events",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_rationale_32_kronos_tools_news_parse_events",
+      "fromNode": "n_kronos_tools_news_rationale_32",
+      "toNode": "n_kronos_tools_news_parse_events",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_parse_headlines_xml_etree_elementtree",
+      "fromNode": "n_kronos_tools_news_parse_headlines",
+      "toNode": "n_xml_etree_elementtree",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_parse_headlines",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_parse_headlines",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_news_kronos_tools_news_tone",
+      "fromNode": "n_kronos_tools_news",
+      "toNode": "n_kronos_tools_news_tone",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_future_ts_pandas",
+      "fromNode": "n_kronos_tools_run_kronos_future_ts",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_run_at_kronos_tools_run_kronos_future_ts",
+      "fromNode": "n_kronos_tools_run_kronos_main_run_at",
+      "toNode": "n_kronos_tools_run_kronos_future_ts",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_run_kronos_future_ts",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_run_kronos_future_ts",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_main_run_at_kronos_tools_run_kronos_sample_paths",
+      "fromNode": "n_kronos_tools_run_kronos_main_run_at",
+      "toNode": "n_kronos_tools_run_kronos_sample_paths",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_run_kronos_sample_paths",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_run_kronos_sample_paths",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_rationale_16_kronos_tools_run_kronos_sample_paths",
+      "fromNode": "n_kronos_tools_run_kronos_rationale_16",
+      "toNode": "n_kronos_tools_run_kronos_sample_paths",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_atr_pandas",
+      "fromNode": "n_kronos_tools_scanner_atr",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_features_kronos_tools_scanner_atr",
+      "fromNode": "n_kronos_tools_scanner_features",
+      "toNode": "n_kronos_tools_scanner_atr",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_atr",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_atr",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_features_kronos_tools_scanner_rsi",
+      "fromNode": "n_kronos_tools_scanner_features",
+      "toNode": "n_kronos_tools_scanner_rsi",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_scan_kronos_tools_scanner_features",
+      "fromNode": "n_kronos_tools_scanner_scan",
+      "toNode": "n_kronos_tools_scanner_features",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_features",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_features",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_rationale_32_kronos_tools_scanner_features",
+      "fromNode": "n_kronos_tools_scanner_rationale_32",
+      "toNode": "n_kronos_tools_scanner_features",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_load_mt5_pandas",
+      "fromNode": "n_kronos_tools_scanner_load_mt5",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_load_mt5",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_load_mt5",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_rsi",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_rsi",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_scan_kronos_tools_scanner_score",
+      "fromNode": "n_kronos_tools_scanner_scan",
+      "toNode": "n_kronos_tools_scanner_score",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_scan_pandas",
+      "fromNode": "n_kronos_tools_scanner_scan",
+      "toNode": "n_pandas",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_scan",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_scan",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_score_numpy",
+      "fromNode": "n_kronos_tools_scanner_score",
+      "toNode": "n_numpy",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_kronos_tools_scanner_score",
+      "fromNode": "n_kronos_tools_scanner",
+      "toNode": "n_kronos_tools_scanner_score",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_scanner_rationale_50_kronos_tools_scanner_score",
+      "fromNode": "n_kronos_tools_scanner_rationale_50",
+      "toNode": "n_kronos_tools_scanner_score",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_build_request_kronos_tools_broker_mt5_pick_filling",
+      "fromNode": "n_kronos_tools_broker_mt5_build_request",
+      "toNode": "n_kronos_tools_broker_mt5_pick_filling",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_run_kronos_tools_broker_mt5_build_request",
+      "fromNode": "n_kronos_tools_broker_mt5_run",
+      "toNode": "n_kronos_tools_broker_mt5_build_request",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_kronos_tools_broker_mt5_build_request",
+      "fromNode": "n_kronos_tools_broker_mt5",
+      "toNode": "n_kronos_tools_broker_mt5_build_request",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_parse_argparse",
+      "fromNode": "n_kronos_tools_broker_mt5_parse",
+      "toNode": "n_argparse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_kronos_tools_broker_mt5_parse",
+      "fromNode": "n_kronos_tools_broker_mt5",
+      "toNode": "n_kronos_tools_broker_mt5_parse",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_kronos_tools_broker_mt5_pick_filling",
+      "fromNode": "n_kronos_tools_broker_mt5",
+      "toNode": "n_kronos_tools_broker_mt5_pick_filling",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_run_kronos_tools_broker_mt5_validate",
+      "fromNode": "n_kronos_tools_broker_mt5_run",
+      "toNode": "n_kronos_tools_broker_mt5_validate",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_kronos_tools_broker_mt5_run",
+      "fromNode": "n_kronos_tools_broker_mt5",
+      "toNode": "n_kronos_tools_broker_mt5_run",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_rationale_66_kronos_tools_broker_mt5_run",
+      "fromNode": "n_kronos_tools_broker_mt5_rationale_66",
+      "toNode": "n_kronos_tools_broker_mt5_run",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_kronos_tools_broker_mt5_validate",
+      "fromNode": "n_kronos_tools_broker_mt5",
+      "toNode": "n_kronos_tools_broker_mt5_validate",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_broker_mt5_rationale_31_kronos_tools_broker_mt5_validate",
+      "fromNode": "n_kronos_tools_broker_mt5_rationale_31",
+      "toNode": "n_kronos_tools_broker_mt5_validate",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_main_kronos_tools_budget_risk_checks",
+      "fromNode": "n_kronos_tools_budget_risk_main",
+      "toNode": "n_kronos_tools_budget_risk_checks",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_kronos_tools_budget_risk_checks",
+      "fromNode": "n_kronos_tools_budget_risk",
+      "toNode": "n_kronos_tools_budget_risk_checks",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_main_kronos_tools_budget_risk_expected_value",
+      "fromNode": "n_kronos_tools_budget_risk_main",
+      "toNode": "n_kronos_tools_budget_risk_expected_value",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_kronos_tools_budget_risk_expected_value",
+      "fromNode": "n_kronos_tools_budget_risk",
+      "toNode": "n_kronos_tools_budget_risk_expected_value",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_rationale_57_kronos_tools_budget_risk_expected_value",
+      "fromNode": "n_kronos_tools_budget_risk_rationale_57",
+      "toNode": "n_kronos_tools_budget_risk_expected_value",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_main_argparse",
+      "fromNode": "n_kronos_tools_budget_risk_main",
+      "toNode": "n_argparse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_main_kronos_tools_budget_risk_size_position",
+      "fromNode": "n_kronos_tools_budget_risk_main",
+      "toNode": "n_kronos_tools_budget_risk_size_position",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_main_kronos_tools_budget_risk_ticket",
+      "fromNode": "n_kronos_tools_budget_risk_main",
+      "toNode": "n_kronos_tools_budget_risk_ticket",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_kronos_tools_budget_risk_main",
+      "fromNode": "n_kronos_tools_budget_risk",
+      "toNode": "n_kronos_tools_budget_risk_main",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_size_position_math",
+      "fromNode": "n_kronos_tools_budget_risk_size_position",
+      "toNode": "n_math",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_kronos_tools_budget_risk_size_position",
+      "fromNode": "n_kronos_tools_budget_risk",
+      "toNode": "n_kronos_tools_budget_risk_size_position",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_rationale_16_kronos_tools_budget_risk_size_position",
+      "fromNode": "n_kronos_tools_budget_risk_rationale_16",
+      "toNode": "n_kronos_tools_budget_risk_size_position",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_budget_risk_kronos_tools_budget_risk_ticket",
+      "fromNode": "n_kronos_tools_budget_risk",
+      "toNode": "n_kronos_tools_budget_risk_ticket",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_framer_motion",
+      "fromNode": "n_package",
+      "toNode": "n_ref_framer_motion",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_react",
+      "fromNode": "n_package",
+      "toNode": "n_ref_react",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_react_dom",
+      "fromNode": "n_package",
+      "toNode": "n_ref_react_dom",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_types_node",
+      "fromNode": "n_package",
+      "toNode": "n_ref_types_node",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_types_react",
+      "fromNode": "n_package",
+      "toNode": "n_ref_types_react",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_types_react_dom",
+      "fromNode": "n_package",
+      "toNode": "n_ref_types_react_dom",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_vitejs_plugin_react",
+      "fromNode": "n_package",
+      "toNode": "n_ref_vitejs_plugin_react",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_oxlint",
+      "fromNode": "n_package",
+      "toNode": "n_ref_oxlint",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_typescript",
+      "fromNode": "n_package",
+      "toNode": "n_ref_typescript",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_ref_vite",
+      "fromNode": "n_package",
+      "toNode": "n_ref_vite",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_dependencies",
+      "fromNode": "n_package",
+      "toNode": "n_package_dependencies",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_devdependencies",
+      "fromNode": "n_package",
+      "toNode": "n_package_devdependencies",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_name",
+      "fromNode": "n_package",
+      "toNode": "n_package_name",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_private",
+      "fromNode": "n_package",
+      "toNode": "n_package_private",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_version",
+      "fromNode": "n_package",
+      "toNode": "n_package_version",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_type",
+      "fromNode": "n_package",
+      "toNode": "n_package_type",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_package_scripts",
+      "fromNode": "n_package",
+      "toNode": "n_package_scripts",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_package_dependencies_framer_motion",
+      "fromNode": "n_package_dependencies",
+      "toNode": "n_package_dependencies_framer_motion",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_package_dependencies_react",
+      "fromNode": "n_package_dependencies",
+      "toNode": "n_package_dependencies_react",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_package_dependencies_react_dom",
+      "fromNode": "n_package_dependencies",
+      "toNode": "n_package_dependencies_react_dom",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_framer_motion_ref_framer_motion",
+      "fromNode": "n_package_dependencies_framer_motion",
+      "toNode": "n_ref_framer_motion",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_react_ref_react",
+      "fromNode": "n_package_dependencies_react",
+      "toNode": "n_ref_react",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_dependencies_react_dom_ref_react_dom",
+      "fromNode": "n_package_dependencies_react_dom",
+      "toNode": "n_ref_react_dom",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_types_node",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_types_node",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_types_react",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_types_react",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_types_react_dom",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_types_react_dom",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_vitejs_plugin_react",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_vitejs_plugin_react",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_oxlint",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_oxlint",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_typescript",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_typescript",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_package_devdependencies_vite",
+      "fromNode": "n_package_devdependencies",
+      "toNode": "n_package_devdependencies_vite",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_oxlint_ref_oxlint",
+      "fromNode": "n_package_devdependencies_oxlint",
+      "toNode": "n_ref_oxlint",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_types_node_ref_types_node",
+      "fromNode": "n_package_devdependencies_types_node",
+      "toNode": "n_ref_types_node",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_types_react_ref_types_react",
+      "fromNode": "n_package_devdependencies_types_react",
+      "toNode": "n_ref_types_react",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_types_react_dom_ref_types_react_dom",
+      "fromNode": "n_package_devdependencies_types_react_dom",
+      "toNode": "n_ref_types_react_dom",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_typescript_ref_typescript",
+      "fromNode": "n_package_devdependencies_typescript",
+      "toNode": "n_ref_typescript",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_vite_ref_vite",
+      "fromNode": "n_package_devdependencies_vite",
+      "toNode": "n_ref_vite",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_package_devdependencies_vitejs_plugin_react_ref_vitejs_plugin_react",
+      "fromNode": "n_package_devdependencies_vitejs_plugin_react",
+      "toNode": "n_ref_vitejs_plugin_react",
+      "label": "declares [EXTRACTED]"
+    },
+    {
+      "id": "e_src_app_ref_framer_motion",
+      "fromNode": "n_src_app",
+      "toNode": "n_ref_framer_motion",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_src_main_src_app",
+      "fromNode": "n_src_main",
+      "toNode": "n_src_app",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_src_main_ref_react",
+      "fromNode": "n_src_main",
+      "toNode": "n_ref_react",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_src_main_ref_react_dom",
+      "fromNode": "n_src_main",
+      "toNode": "n_ref_react_dom",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_src_main_src_index",
+      "fromNode": "n_src_main",
+      "toNode": "n_src_index",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_vite_config_ref_vitejs_plugin_react",
+      "fromNode": "n_vite_config",
+      "toNode": "n_ref_vitejs_plugin_react",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_vite_config_ref_vite",
+      "fromNode": "n_vite_config",
+      "toNode": "n_ref_vite",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_numpy",
+      "fromNode": "n_kronos_tools_analysis",
+      "toNode": "n_numpy",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_kronos_tools_analysis",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_kronos_tools_analysis",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_kronos_tools_analysis",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_kronos_tools_analysis",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_analysis_rationale_1_kronos_tools_analysis",
+      "fromNode": "n_kronos_tools_analysis_rationale_1",
+      "toNode": "n_kronos_tools_analysis",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_readme_calibration_race_kronos_tools_analysis",
+      "fromNode": "n_kronos_tools_readme_calibration_race",
+      "toNode": "n_kronos_tools_analysis",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_readme_race_counting_kronos_tools_analysis",
+      "fromNode": "n_kronos_tools_readme_race_counting",
+      "toNode": "n_kronos_tools_analysis",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_numpy",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_numpy",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_pandas",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_pandas",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_argparse",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_argparse",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_sys",
+      "fromNode": "n_kronos_tools_run_kronos",
+      "toNode": "n_sys",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_run_kronos_rationale_1_kronos_tools_run_kronos",
+      "fromNode": "n_kronos_tools_run_kronos_rationale_1",
+      "toNode": "n_kronos_tools_run_kronos",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_readme_calibration_race_kronos_tools_run_kronos",
+      "fromNode": "n_kronos_tools_readme_calibration_race",
+      "toNode": "n_kronos_tools_run_kronos",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_argparse",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_argparse",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_numpy",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_numpy",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_pandas",
+      "fromNode": "n_kronos_tools_timemachine",
+      "toNode": "n_pandas",
+      "label": "imports [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_timemachine_rationale_1_kronos_tools_timemachine",
+      "fromNode": "n_kronos_tools_timemachine_rationale_1",
+      "toNode": "n_kronos_tools_timemachine",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_kronos_tools_readme_time_machine_kronos_tools_timemachine",
+      "fromNode": "n_kronos_tools_readme_time_machine",
+      "toNode": "n_kronos_tools_timemachine",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_oxlintrc_oxlintrc_schema",
+      "fromNode": "n_oxlintrc",
+      "toNode": "n_oxlintrc_schema",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_oxlintrc_oxlintrc_plugins",
+      "fromNode": "n_oxlintrc",
+      "toNode": "n_oxlintrc_plugins",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_oxlintrc_oxlintrc_rules",
+      "fromNode": "n_oxlintrc",
+      "toNode": "n_oxlintrc_rules",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_oxlintrc_rules_oxlintrc_rules_react_rules_of_hooks",
+      "fromNode": "n_oxlintrc_rules",
+      "toNode": "n_oxlintrc_rules_react_rules_of_hooks",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_oxlintrc_rules_oxlintrc_rules_react_only_export_components",
+      "fromNode": "n_oxlintrc_rules",
+      "toNode": "n_oxlintrc_rules_react_only_export_components",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_scripts_package_scripts_preview",
+      "fromNode": "n_package_scripts",
+      "toNode": "n_package_scripts_preview",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_scripts_package_scripts_dev",
+      "fromNode": "n_package_scripts",
+      "toNode": "n_package_scripts_dev",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_scripts_package_scripts_build",
+      "fromNode": "n_package_scripts",
+      "toNode": "n_package_scripts_build",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_package_scripts_package_scripts_lint",
+      "fromNode": "n_package_scripts",
+      "toNode": "n_package_scripts_lint",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_tsconfig_files",
+      "fromNode": "n_tsconfig",
+      "toNode": "n_tsconfig_files",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_tsconfig_references",
+      "fromNode": "n_tsconfig",
+      "toNode": "n_tsconfig_references",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_tsconfig_app_compileroptions",
+      "fromNode": "n_tsconfig_app",
+      "toNode": "n_tsconfig_app_compileroptions",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_tsconfig_app_include",
+      "fromNode": "n_tsconfig_app",
+      "toNode": "n_tsconfig_app_include",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_moduleresolution",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_moduleresolution",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_allowimportingtsextensions",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_allowimportingtsextensions",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_moduledetection",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_moduledetection",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_noemit",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_noemit",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_jsx",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_jsx",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_nounusedlocals",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_nounusedlocals",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_nounusedparameters",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_nounusedparameters",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_erasablesyntaxonly",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_erasablesyntaxonly",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_tsbuildinfofile",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_tsbuildinfofile",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_target",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_target",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_lib",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_lib",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_module",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_module",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_types",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_types",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_allowarbitraryextensions",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_allowarbitraryextensions",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_app_compileroptions_tsconfig_app_compileroptions_skiplibcheck",
+      "fromNode": "n_tsconfig_app_compileroptions",
+      "toNode": "n_tsconfig_app_compileroptions_skiplibcheck",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_node_tsconfig_node_compileroptions",
+      "fromNode": "n_tsconfig_node",
+      "toNode": "n_tsconfig_node_compileroptions",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_node_tsconfig_node_include",
+      "fromNode": "n_tsconfig_node",
+      "toNode": "n_tsconfig_node_include",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_node_compileroptions_tsconfig_node_compileroptions_module",
+      "fromNode": "n_tsconfig_node_compileroptions",
+      "toNode": "n_tsconfig_node_compileroptions_module",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_tsconfig_node_compileroptions_tsconfig_node_compileroptions_allowimportingtsextensions",
+      "fromNode": "n_tsconfig_node_compileroptions",
+      "toNode": "n_tsconfig_node_compileroptions_allowimportingtsextensions",
+      "label": "contains [EXTRACTED]"
+    }
+  ]
+}
