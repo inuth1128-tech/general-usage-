@@ -76,6 +76,12 @@ CREATE TABLE IF NOT EXISTS memories (
 );
 `);
 
+// 이전 버전 DB에 회의 상태 열 추가 (이미 있으면 건너뜀)
+const meetingCols = db.prepare('PRAGMA table_info(meetings)').all().map((c) => c.name);
+for (const [col, ddl] of [['status', "TEXT NOT NULL DEFAULT 'done'"], ['participants', "TEXT NOT NULL DEFAULT ''"], ['rounds', 'INTEGER NOT NULL DEFAULT 1']]) {
+  if (!meetingCols.includes(col)) db.exec(`ALTER TABLE meetings ADD COLUMN ${col} ${ddl}`);
+}
+
 // 직원 명부 등록 (이미 있으면 건드리지 않는다 → 대표가 수정한 내용 보존)
 const insert = db.prepare(`
   INSERT OR IGNORE INTO employees (id, name, title, role, reports_to, engine, tools, persona)

@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './db.js';
+import { startMeeting, ceoSay, listMeetings, getMeeting } from './meetings.js';
 import { submitInstruction, reviewTask, updateEmployee, todayUsage } from './agents.js';
 
 const PORT = Number(process.env.PORT || 3001);
@@ -55,6 +56,14 @@ const server = createServer(async (req, res) => {
         const d = await readJson(req);
         return reply(res, reviewTask(m[1], d.verdict, d.note));
       }
+      if (url.pathname === '/api/meetings') {
+        const d = await readJson(req);
+        return reply(res, startMeeting(d.topic, d.participants, d.rounds), 202);
+      }
+      if ((m = url.pathname.match(/^\/api\/meetings\/(\d+)\/messages$/))) {
+        const d = await readJson(req);
+        return reply(res, ceoSay(m[1], d.body));
+      }
       if ((m = url.pathname.match(/^\/api\/employees\/([a-z]+)$/))) {
         return reply(res, updateEmployee(m[1], await readJson(req)));
       }
@@ -62,6 +71,12 @@ const server = createServer(async (req, res) => {
     }
     if (req.method !== 'GET') return json(res, { error: 'method not allowed' }, 405);
     if (getApi[url.pathname]) return json(res, getApi[url.pathname]());
+    if (url.pathname === '/api/meetings') return json(res, listMeetings());
+    let mm;
+    if ((mm = url.pathname.match(/^\/api\/meetings\/(\d+)$/))) {
+      const meeting = getMeeting(mm[1]);
+      return meeting ? json(res, meeting) : json(res, { error: 'not found' }, 404);
+    }
     const file = url.pathname === '/' ? '/index.html' : url.pathname;
     const target = join(publicDir, file);
     if (!target.startsWith(publicDir + sep)) return json(res, { error: 'forbidden' }, 403);

@@ -3,19 +3,19 @@ import { db } from './db.js';
 import { runClaude } from './claude.js';
 
 const DAILY_LIMIT = Number(process.env.DAILY_CALL_LIMIT || 20);
-let busy = false; // Pro 한도 보호: 한 번에 하나만 처리
+export const lock = { busy: false }; // Pro 한도 보호: 한 번에 하나만 처리
 
 export function todayUsage() {
   const n = db.prepare("SELECT COUNT(*) AS n FROM usage_log WHERE date(created_at) = date('now','localtime')").get().n;
   return { used: n, limit: DAILY_LIMIT, remaining: Math.max(0, DAILY_LIMIT - n) };
 }
 
-const COMPANY = `회사: tigercat-ai. 막대 인간(아웃라인) 캐릭터가 나오는 영어 30초 세로 영상(쇼츠/릴스)으로 동기부여·사람 심리·인생 교훈을 전하는 YouTube/Instagram/Threads/Facebook 채널을 운영합니다.
+export const COMPANY = `회사: tigercat-ai. 막대 인간(아웃라인) 캐릭터가 나오는 영어 30초 세로 영상(쇼츠/릴스)으로 동기부여·사람 심리·인생 교훈을 전하는 YouTube/Instagram/Threads/Facebook 채널을 운영합니다.
 영상 스타일: 검은 배경, 흰색 막대 인간, 빨강 1색 강조, 개념을 동심원 같은 도해로 시각화, 영문 대문자 모노스페이스 글자.
 직원: 한비서(비서실장), 기획이(기획팀장), 글이(작가), 그림이(디자이너), 편집이(영상편집), 쓰레드(SNS 담당), 웹이(브랜드사이트), 꼼꼼이(검수담당).
 규칙: 업로드·결제·삭제는 반드시 대표 승인을 받는다. Higgsfield 영상 생성은 크레딧을 쓰므로 견적을 먼저 보고한다. 지금은 도구를 쓰지 말고 글로만 답한다.`;
 
-function memoryBlock(memories) {
+export function memoryBlock(memories) {
   if (!memories.length) return '';
   return '\n[과거 기억 — 반드시 참고하고, 반복 금지 항목은 절대 같은 방식으로 하지 마세요]\n'
     + memories.map((m) => `- (${m.kind}${m.do_not_repeat ? ', 반복 금지' : ''}) ${m.summary}`).join('\n') + '\n';
@@ -49,6 +49,10 @@ ${instruction}
 결과물을 먼저 보여 주고, 마지막에 "확인할 점"을 한두 줄로 적으세요. 군더더기 없이 답하세요.`;
 }
 
+export function logUsage(employeeId, taskId, ok, ms) {
+  db.prepare('INSERT INTO usage_log (employee_id, task_id, ok, duration_ms) VALUES (?, ?, ?, ?)').run(employeeId, taskId, ok ? 1 : 0, ms);
+}
+
 export function submitInstruction(instruction, assigneeId = 'secretary') {
   const text = String(instruction || '').trim();
   if (!text) return { error: '지시 내용이 비어 있습니다.', status: 400 };
@@ -58,7 +62,7 @@ export function submitInstruction(instruction, assigneeId = 'secretary') {
   if (!emp.active) return { error: `${emp.name}은(는) 지금 휴직 상태입니다.`, status: 400 };
   const u = todayUsage();
   if (u.remaining <= 0) return { error: `오늘 호출 한도(${u.limit}회)를 모두 썼습니다. 내일 다시 하거나 DAILY_CALL_LIMIT를 올려 주세요.`, status: 429 };
-  if (busy) return { error: '직원이 다른 업무를 처리 중입니다. 잠시 후 다시 시도해 주세요.', status: 409 };
+  if (lock.busy) return { error: '직원이 다른 업무를 처리 중입니다. 잠시 후 다시 시도해 주세요.', status: 409 };
   const title = text.replace(/\s+/g, ' ').slice(0, 40);
   const r = db.prepare("INSERT INTO tasks (title, instruction, status, assignee_id) VALUES (?, ?, 'requested', ?)").run(title, text, emp.id);
   const id = Number(r.lastInsertRowid);
@@ -67,7 +71,7 @@ export function submitInstruction(instruction, assigneeId = 'secretary') {
 }
 
 async function work(id, emp, instruction) {
-  busy = true;
+  lock.busy = true;
   const started = Date.now();
   db.prepare("UPDATE tasks SET status = 'working', updated_at = datetime('now') WHERE id = ?").run(id);
   try {
@@ -80,7 +84,7 @@ async function work(id, emp, instruction) {
   } catch (e) {
     db.prepare("UPDATE tasks SET status = 'failed', result = ?, updated_at = datetime('now') WHERE id = ?").run(String(e.message), id);
   } finally {
-    busy = false;
+    lock.busy = false;
   }
 }
 

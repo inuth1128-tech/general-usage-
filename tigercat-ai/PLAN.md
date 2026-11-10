@@ -65,7 +65,8 @@
 ## 진행 현황
 - 2단계(뼈대): 완료 (대표 컴퓨터에서 확인됨)
 - 3단계(비서실장 가동): 완료 (대표 컴퓨터에서 확인됨)
-- 4단계(직원 채용): 코드 완성 — 대표 확인 대기 (실행 방법: tigercat-ai/docs/STEP4.md)
+- 4단계(직원 채용): 완료 (대표 컴퓨터에서 확인됨)
+- 5단계(회의+메신저): 코드 완성 — 대표 확인 대기 (실행 방법: tigercat-ai/docs/STEP5.md)
 
 ## 1단계 진행 현황: 완료
 PowerShell · Node.js · npm · git · 저장소 clone · Claude Code(Pro) · Higgsfield MCP 연결 · ffmpeg · 채널 4개 개설
