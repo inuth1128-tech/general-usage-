@@ -29,6 +29,11 @@
 | 목소리 | **Arthur** (Higgsfield의 AI 음성 중 선택). 모든 영상 동일 목소리로 통일 |
 | 채널 | YouTube, Instagram, Threads, **Facebook** (전부 신규 개설) |
 
+**참고(레퍼런스) 영상** — 이런 종류의 영상을 만들고 싶다고 대표님이 제시함
+- https://www.instagram.com/reel/C1CdoXCOVgO/
+- https://www.facebook.com/share/r/1AAV2TSPFW/
+- ※ 이 클라우드 세션은 Instagram/Facebook에 접속할 수 없어 영상 내용을 직접 못 봤음 → 대표님 설명 또는 캡처/다운로드 파일로 스타일 분석 필요 (분석 후 이 섹션에 스타일 가이드 기록)
+
 **제작 원칙**
 - 캐릭터가 단순한 선 그림이라 **일관성 유지가 쉽고 비용이 낮음** → 기본은 이미지+음성+자막 조립 방식, 핵심 영상만 Higgsfield 영상 생성
 - 캐릭터는 한 번 확정해 Higgsfield의 **참조 요소(reference element)로 저장**해 두고 매번 재사용
