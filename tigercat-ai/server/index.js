@@ -1,16 +1,26 @@
 // 업무사이트 서버: 내 컴퓨터(localhost)에서만 접속 가능하다.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { createReadStream, statSync } from 'node:fs';
+import { createReadStream, statSync, readFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
 import { dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './db.js';
+import { overview as monitorOverview, addVideo, addManualMetric, deleteVideo, fetchYoutubeNow, saveKey, startMonitor, listAlerts, markAlertsSeen, requestReport } from './monitor.js';
 import { listProjects, getProject, outputFile, buildStatus, startBuild, openFolder, updateFromGit } from './studio.js';
 import { listPlans, addPlan, updatePlan, deletePlan, markPosted } from './plans.js';
 import { listMemories, addMemory, updateMemory, deleteMemory, recall } from './memory.js';
 import { startMeeting, ceoSay, listMeetings, getMeeting } from './meetings.js';
 import { submitInstruction, reviewTask, updateEmployee, todayUsage } from './agents.js';
 
+// .env 파일(API 키 등 비밀값)을 읽는다. GitHub에는 올라가지 않는다.
+try {
+  const envPath = join(dirname(fileURLToPath(import.meta.url)), '..', '.env');
+  for (const line of readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
+    if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+  }
+} catch {}
 const PORT = Number(process.env.PORT || 3001);
 const HOST = '127.0.0.1'; // 외부 접속 차단 (이 컴퓨터에서만)
 const here = dirname(fileURLToPath(import.meta.url));
@@ -59,6 +69,13 @@ const server = createServer(async (req, res) => {
         const d = await readJson(req);
         return reply(res, reviewTask(m[1], d.verdict, d.note));
       }
+      if (url.pathname === '/api/monitor/videos') return reply(res, addVideo(await readJson(req)), 201);
+      if ((m = url.pathname.match(/^\/api\/monitor\/videos\/(\d+)\/metric$/))) return reply(res, addManualMetric(m[1], await readJson(req)), 201);
+      if ((m = url.pathname.match(/^\/api\/monitor\/videos\/(\d+)\/delete$/))) return reply(res, deleteVideo(m[1]));
+      if (url.pathname === '/api/monitor/fetch') return reply(res, await fetchYoutubeNow());
+      if (url.pathname === '/api/monitor/key') return reply(res, saveKey((await readJson(req)).key));
+      if (url.pathname === '/api/monitor/report') return reply(res, requestReport(), 202);
+      if (url.pathname === '/api/alerts/seen') return reply(res, markAlertsSeen());
       if (url.pathname === '/api/studio/build') return reply(res, startBuild((await readJson(req)).name), 202);
       if (url.pathname === '/api/studio/open') return reply(res, openFolder((await readJson(req)).name));
       if (url.pathname === '/api/studio/update') return reply(res, updateFromGit());
@@ -101,6 +118,8 @@ const server = createServer(async (req, res) => {
       const emp = url.searchParams.get('employee') || 'secretary';
       return json(res, recall(emp, url.searchParams.get('q') || '').map((x) => ({ id: x.id, kind: x.kind, summary: x.summary, doNotRepeat: x.do_not_repeat, company: x.employee_id === null })));
     }
+    if (url.pathname === '/api/monitor/overview') return json(res, monitorOverview());
+    if (url.pathname === '/api/alerts') return json(res, listAlerts());
     if (url.pathname === '/api/studio/projects') return json(res, listProjects());
     if (url.pathname === '/api/studio/project') { const pr = getProject(url.searchParams.get('name')); return pr ? json(res, pr) : json(res, { error: 'not found' }, 404); }
     if (url.pathname === '/api/studio/status') return json(res, buildStatus());
@@ -142,10 +161,34 @@ const server = createServer(async (req, res) => {
   }
 });
 
+function openBrowser() {
+  if (process.env.OPEN_BROWSER !== '1') return;
+  const url = `http://localhost:${PORT}`;
+  try {
+    if (process.platform === 'win32') spawn('cmd', ['/c', 'start', '""', url], { detached: true, stdio: 'ignore', windowsHide: true }).unref();
+    else if (process.platform === 'darwin') spawn('open', [url], { detached: true, stdio: 'ignore' }).unref();
+  } catch {}
+}
+
+server.on('error', (e) => {
+  if (e.code === 'EADDRINUSE') {
+    // 이미 켜져 있는 경우: 새로 켜지 않고 브라우저만 연다.
+    console.log('');
+    console.log('  업무사이트가 이미 켜져 있습니다. 브라우저를 엽니다.');
+    openBrowser();
+    setTimeout(() => process.exit(0), 800);
+    return;
+  }
+  console.error('서버를 켜지 못했습니다:', e.message);
+  process.exit(1);
+});
+
 server.listen(PORT, HOST, () => {
   console.log('');
   console.log('  tigercat-ai 업무사이트가 켜졌습니다.');
   console.log(`  브라우저에서 열기:  http://localhost:${PORT}`);
   console.log('  끄려면 이 창에서 Ctrl + C 를 누르세요.');
   console.log('');
+  startMonitor(); // 조회수 수시 확인 시작 (YouTube API 키가 있을 때만 동작)
+  openBrowser(); // 서버가 준비된 뒤에 브라우저를 연다 (먼저 열려서 접속 실패가 나던 문제 방지)
 });

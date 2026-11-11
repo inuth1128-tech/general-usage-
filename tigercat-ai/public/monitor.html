@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tigercat-ai 성과 모니터</title>
+<style>
+  :root { --bg:#0a0a0a; --card:#141414; --line:#2a2a2a; --text:#f2f2f2; --mute:#9a9a9a; --red:#ff3b30; --green:#34c759; --yellow:#ffcc00; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui, "Malgun Gothic", sans-serif; line-height:1.5; }
+  header, main { max-width:1000px; margin:0 auto; padding:0 20px; } header { padding-top:24px; } main { padding-bottom:60px; }
+  h1 { margin:0; font-size:26px; } h1 span { color:var(--red); } a { color:var(--mute); } .sub { color:var(--mute); margin-top:4px; }
+  h2 { font-size:16px; color:var(--mute); font-weight:600; margin:28px 0 12px; }
+  select, button, input { font:inherit; }
+  select, input { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 12px; }
+  button { background:var(--red); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-weight:700; cursor:pointer; }
+  button.s { background:transparent; border:1px solid var(--line); color:var(--text); font-weight:600; padding:7px 12px; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  .box { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
+  .ok { color:var(--green); } .warn { color:var(--yellow); } .bad { color:var(--red); } .mute { color:var(--mute); font-size:13px; }
+  #alerts { display:none; background:#2a2400; border:1px solid var(--yellow); border-radius:14px; padding:12px 16px; margin-top:16px; }
+  table { width:100%; border-collapse:collapse; } th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:middle; font-size:14px; }
+  th { color:var(--mute); font-weight:600; font-size:12px; } td.n { font-variant-numeric:tabular-nums; }
+  .up { color:var(--green); } .flat { color:var(--mute); }
+  .wrap { overflow-x:auto; }
+  ol { margin:8px 0 0 18px; padding:0; color:#d8d8d8; font-size:14px; } code { background:#000; padding:1px 6px; border-radius:6px; }
+  details summary { cursor:pointer; color:var(--mute); }
+</style>
+</head>
+<body>
+<header>
+  <h1>tigercat<span>-ai</span> 성과 모니터</h1>
+  <div class="sub"><a href="/">← 업무사이트로</a> · 담당: <b>쓰레드</b>(SNS 담당) · 올린 영상의 조회수를 수시로 확인합니다</div>
+  <div id="alerts"></div>
+</header>
+<main>
+  <h2>자동 확인 설정 (YouTube)</h2>
+  <div class="box">
+    <div id="st"></div>
+    <div class="row">
+      <input id="key" type="password" placeholder="YouTube API 키 붙여넣기" style="flex:1;min-width:240px" autocomplete="off">
+      <button id="saveKey">키 저장</button>
+      <button class="s" id="fetchNow">지금 조회</button>
+    </div>
+    <details style="margin-top:10px"><summary>API 키 받는 방법 (처음 한 번, 무료)</summary>
+      <ol>
+        <li>console.cloud.google.com 에 <b>YouTube 채널을 만든 구글 계정</b>으로 로그인</li>
+        <li>위쪽 프로젝트 선택 → <b>새 프로젝트</b> 만들기 (이름은 tigercat 아무거나)</li>
+        <li>왼쪽 메뉴 <b>API 및 서비스 → 라이브러리</b> → <code>YouTube Data API v3</code> 검색 → <b>사용</b></li>
+        <li><b>사용자 인증 정보 → 사용자 인증 정보 만들기 → API 키</b></li>
+        <li>나온 키를 복사해서 위 칸에 붙여넣고 <b>키 저장</b></li>
+      </ol>
+      <div class="mute" style="margin-top:6px">키는 이 컴퓨터의 <code>.env</code> 파일에만 저장되고 GitHub에는 올라가지 않습니다. 하루 사용 한도(10,000)에 비해 이 확인은 거의 쓰지 않습니다.</div>
+    </details>
+    <div class="mute" style="margin-top:8px">Instagram · Facebook · Threads 는 아직 자동 조회가 안 됩니다. 아래에서 <b>숫자 입력</b>으로 직접 기록해 주세요. (자동 연결은 Meta 개발자 앱 설정이 필요해서 나중에 따로 진행)</div>
+  </div>
+
+  <h2>영상 등록</h2>
+  <div class="row" style="margin-top:0">
+    <select id="plat"><option value="youtube">YouTube</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="threads">Threads</option></select>
+    <input id="url" placeholder="영상 주소 (YouTube는 필수)" style="flex:1;min-width:240px">
+    <input id="title" placeholder="이름 (비워도 됨)" style="width:200px">
+    <button id="add">등록</button>
+  </div>
+
+  <h2>영상별 성과</h2>
+  <div class="wrap"><table>
+    <thead><tr><th>영상</th><th>조회수</th><th>좋아요</th><th>댓글</th><th>직전 대비</th><th>24시간</th><th>추이</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div id="empty" class="mute" style="display:none;margin-top:10px">아직 등록한 영상이 없습니다. 영상을 올린 뒤 위에서 등록해 주세요.</div>
+
+  <h2>성과 리포트</h2>
+  <div class="box">
+    <div class="mute">쓰레드가 지금까지의 숫자를 보고 요약, 잘된 점, 아쉬운 점, 다음 행동을 써 줍니다. (Claude 호출 1회, 결과는 업무사이트의 "업무 기록"에 나옵니다)</div>
+    <div class="row"><button id="report">쓰레드에게 리포트 요청</button><span id="rmsg" class="mute"></span></div>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = (n) => (n === null || n === undefined ? '-' : Number(n).toLocaleString('ko-KR'));
+async function get(p) { const r = await fetch(p); if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); }
+async function post(p, b) { const r = await fetch(p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b || {}) }); const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j; }
+const delta = (n) => n === null ? '<span class="flat">-</span>' : n > 0 ? `<span class="up">+${fmt(n)}</span>` : `<span class="flat">${fmt(n)}</span>`;
+function spark(a) {
+  if (a.length < 2) return '<span class="mute">기록 1개</span>';
+  const w = 90, h = 26, mx = Math.max(...a), mn = Math.min(...a), rg = mx - mn || 1;
+  const pts = a.map((v, i) => `${(i / (a.length - 1) * (w - 4) + 2).toFixed(1)},${(h - 3 - (v - mn) / rg * (h - 6)).toFixed(1)}`).join(' ');
+  return `<svg width="${w}" height="${h}"><polyline points="${pts}" fill="none" stroke="#ff3b30" stroke-width="1.6"/></svg>`;
+}
+const PN = { youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', threads: 'Threads' };
+async function load() {
+  const o = await get('/api/monitor/overview'), s = o.status;
+  $('st').innerHTML = s.hasKey
+    ? `<span class="ok">● 자동 확인 켜짐</span> · ${s.intervalMin}분마다 YouTube 조회수를 확인합니다 · 마지막 확인: ${s.lastRun ? new Date(s.lastRun).toLocaleString('ko-KR') : '아직 없음'}${s.lastError ? `<div class="bad" style="margin-top:6px">최근 오류: ${esc(s.lastError)}</div>` : ''}`
+    : '<span class="warn">● 자동 확인 꺼짐</span> · 아래 방법으로 YouTube API 키를 넣으면 켜집니다. (키 없이도 숫자 입력은 됩니다)';
+  $('rows').innerHTML = o.videos.map((v) => `<tr>
+    <td><b>${esc(v.title)}</b><div class="mute">${PN[v.platform]}${v.latest ? ' · ' + esc(v.latest.taken_at) + (v.latest.source === 'manual' ? ' (직접 입력)' : '') : ''}</div></td>
+    <td class="n"><b>${fmt(v.latest && v.latest.views)}</b></td><td class="n">${fmt(v.latest && v.latest.likes)}</td><td class="n">${fmt(v.latest && v.latest.comments)}</td>
+    <td class="n">${delta(v.change)}</td><td class="n">${delta(v.change24h)}</td><td>${spark(v.series)}</td>
+    <td style="white-space:nowrap"><button class="s" onclick="manual(${v.id})">숫자 입력</button> <button class="s" onclick="del(${v.id})">삭제</button></td></tr>`).join('');
+  $('empty').style.display = o.videos.length ? 'none' : 'block';
+  const al = await get('/api/alerts');
+  $('alerts').style.display = al.length ? 'block' : 'none';
+  $('alerts').innerHTML = al.length ? al.map((a) => `<div>${esc(a.message)}</div>`).join('') + '<div style="margin-top:8px"><button class="s" onclick="seen()">확인했습니다</button></div>' : '';
+}
+async function seen() { await post('/api/alerts/seen'); load(); }
+async function manual(id) {
+  const views = prompt('현재 조회수는? (숫자만)'); if (views === null) return;
+  const likes = prompt('좋아요 수는? (모르면 비워 두세요)') ?? '';
+  const comments = prompt('댓글 수는? (모르면 비워 두세요)') ?? '';
+  try { await post(`/api/monitor/videos/${id}/metric`, { views: views.replace(/,/g, '').trim(), likes: likes.replace(/,/g, '').trim(), comments: comments.replace(/,/g, '').trim() }); load(); } catch (e) { alert(e.message); }
+}
+async function del(id) { if (confirm('이 영상의 기록을 모두 삭제할까요?')) { await post(`/api/monitor/videos/${id}/delete`); load(); } }
+$('add').onclick = async () => {
+  try { await post('/api/monitor/videos', { platform: $('plat').value, url: $('url').value, title: $('title').value }); $('url').value = ''; $('title').value = ''; await load(); if ($('plat').value === 'youtube') $('fetchNow').click(); } catch (e) { alert(e.message); }
+};
+$('saveKey').onclick = async () => { try { await post('/api/monitor/key', { key: $('key').value }); $('key').value = ''; await load(); alert('저장했습니다. 이제 자동으로 확인합니다.'); } catch (e) { alert(e.message); } };
+$('fetchNow').onclick = async () => { $('fetchNow').disabled = true; try { const j = await post('/api/monitor/fetch'); if (j.note) alert(j.note); } catch (e) { alert(e.message); } $('fetchNow').disabled = false; load(); };
+$('report').onclick = async () => { $('rmsg').textContent = '요청 중…'; try { await post('/api/monitor/report'); $('rmsg').textContent = '쓰레드가 작성 중입니다. 업무사이트의 "업무 기록"에서 결과를 확인하세요 (10~60초).'; } catch (e) { $('rmsg').textContent = ''; alert(e.message); } };
+load().catch((e) => { $('st').textContent = '불러오지 못했습니다: ' + e.message; });
+setInterval(() => load().catch(() => {}), 60000);
+</script>
+</body>
+</html>

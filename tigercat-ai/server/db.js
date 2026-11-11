@@ -75,6 +75,32 @@ CREATE TABLE IF NOT EXISTS memories (
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- 성과 모니터링: 올린 영상의 조회수 기록
+CREATE TABLE IF NOT EXISTS tracked_videos (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  platform   TEXT NOT NULL,            -- youtube | instagram | facebook | threads
+  ref        TEXT NOT NULL,            -- YouTube 영상 ID 또는 직접 정한 이름
+  title      TEXT NOT NULL,
+  url        TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+);
+CREATE TABLE IF NOT EXISTS metrics (
+  id        INTEGER PRIMARY KEY AUTOINCREMENT,
+  video_id  INTEGER NOT NULL REFERENCES tracked_videos(id) ON DELETE CASCADE,
+  views     INTEGER NOT NULL,
+  likes     INTEGER,
+  comments  INTEGER,
+  source    TEXT NOT NULL,              -- auto | manual
+  taken_at  TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+);
+CREATE TABLE IF NOT EXISTS alerts (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  video_id   INTEGER,
+  message    TEXT NOT NULL,
+  seen       INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now','localtime'))
+);
+
 -- 계획 게시판: 다음 영상 계획을 미리 적어 두고, 때가 되면 화면 맨 위에 알려 준다
 CREATE TABLE IF NOT EXISTS plans (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -120,9 +146,9 @@ if (db.prepare('SELECT COUNT(*) AS n FROM plans').get().n === 0) {
 
 // 한 번만 올리는 기본 계획들. 올린 기록(meta)을 남겨서, 대표님이 삭제해도 다시 생기지 않는다.
 db.exec('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)');
-function seedOnce(key, title, body, when) {
+function seedOnce(key, title, body, when, status = 'waiting') {
   if (db.prepare('SELECT 1 FROM meta WHERE key = ?').get(key)) return;
-  db.prepare('INSERT INTO plans (title, body, remind_when) VALUES (?, ?, ?)').run(title, body, when);
+  db.prepare('INSERT INTO plans (title, body, remind_when, status) VALUES (?, ?, ?, ?)').run(title, body, when, status);
   db.prepare('INSERT INTO meta (key, value) VALUES (?, ?)').run(key, new Date().toISOString());
 }
 seedOnce(
@@ -136,4 +162,24 @@ seedOnce(
 3) 이미지가 정해지면 이 Claude Code 세션으로 돌아와 영상 클립 제작과 조립을 진행한다
 참고: 채팅방에서는 이 프로젝트 파일에 접근할 수 없으니 이미지 주소만 가져오면 됩니다.`,
   'after_post'
+);
+
+// 쓰레드(SNS 담당)에게 성과 모니터링을 맡긴다. 대표가 역할을 고치지 않은 경우에만 갱신한다.
+{
+  const OLD = 'YouTube/Instagram/Threads/Facebook 업로드 문구와 일정을 준비하고 반응을 분석한다. 업로드는 대표 승인 후에만 진행한다.';
+  const NEW = 'YouTube/Instagram/Threads/Facebook 업로드 문구와 일정을 준비한다. 올린 영상의 조회수·좋아요·댓글을 수시로 모니터링하고, 성과 리포트(잘된 점, 아쉬운 점, 다음 행동)를 쓴다. 업로드는 대표 승인 후에만 진행한다.';
+  db.prepare("UPDATE employees SET role = ? WHERE id = 'social' AND role = ?").run(NEW, OLD);
+}
+
+seedOnce(
+  'seed_plan_profile_image',
+  '지금 할 일: 프로필 이미지(정사각형 캐릭터)를 새 Claude 채팅방에서 만들기',
+  `왜: YouTube·Instagram·Facebook·Threads 프로필 사진이 비어 있으면 신뢰가 떨어져 보입니다. 새 채팅방에서 만들면 무제한 혜택(Nano Banana)으로 크레딧이 들지 않습니다.
+1) 먼저 캐릭터 시안 A 이미지를 컴퓨터에 저장해 둡니다. (이 Claude Code 대화에서 받은 시안 A 주소를 브라우저에 열고 우클릭 → 이미지를 다른 이름으로 저장)
+2) claude.ai 에서 새 채팅을 열고, 저장한 이미지를 첨부합니다. (Higgsfield 연결이 켜져 있어야 함)
+3) 아래 문구를 붙여넣습니다:
+"첨부한 캐릭터와 똑같은 얇은 흰색 외곽선 사람 모양 캐릭터로, 정사각형(1:1) SNS 프로필 이미지를 만들어 줘. 배경은 거의 검정(#0a0a0a). 캐릭터의 머리와 상체가 가운데에 크게 보이게 하고, 가는 흰 선만 사용. 글자, 다른 물체, 빨간색은 넣지 마. Higgsfield의 Nano Banana를 무제한 혜택으로 만들어 줘."
+4) 마음에 드는 이미지를 저장해서 4곳 프로필에 올립니다. (원형으로 잘려도 캐릭터가 가운데에 남아야 함)`,
+  'manual',
+  'due'
 );
