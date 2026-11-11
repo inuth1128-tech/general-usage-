@@ -78,5 +78,11 @@
     0.6,
     0.25,
     0.3
+  ],
+  "sceneStarts": [
+    5,
+    null,
+    null,
+    null
   ]
 }

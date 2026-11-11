@@ -75,6 +75,8 @@ const { mode, b } = findBoundaries();
 log('자막 타이밍 방식: ' + mode);
 sentences.forEach((s, i) => { s.start = i === 0 ? 0 : b[i - 1]; s.end = i === sentences.length - 1 ? dur : b[i]; });
 const sceneStart = cfg.scenes.map((_, si) => sentences.find((s) => s.scene === si).start);
+// sceneStarts: 화면 전환 시점을 음성과 따로 정하고 싶을 때 (초, 2번째 장면부터). null 이면 음성 기준을 그대로 씀. 자막 타이밍은 바뀌지 않는다.
+(cfg.sceneStarts || []).forEach((v, k) => { if (typeof v === 'number' && k + 1 < sceneStart.length) sceneStart[k + 1] = v; });
 const sceneDur = sceneStart.map((st, i) => (i === sceneStart.length - 1 ? dur : sceneStart[i + 1]) - st);
 
 // 3) 자막 파일(ASS): 큰 영문 대문자, 빨강은 지정한 단어만
