@@ -112,7 +112,8 @@ if (style === 'clips') {
   //   speed: 1 = 원래 속도, 1.5 = 1.5배 빠르게, 0.74 = 느리게. (안 적으면 장면 길이에 맞춰 자동으로 늘림: 최대 1.5배 느리게)
   //   fill : 속도를 올려 클립이 장면보다 짧아질 때 남는 시간 채우기. pingpong = 앞뒤 왕복 재생, hold = 마지막 화면 유지
   //   pushIn: 장면 내내 천천히 확대 (예: 0.1 = 10%). 멈춰 있는 구간이 심심하지 않게 한다.
-  const L = sceneDur.map((d, i) => d + (i < n - 1 ? T : 0));
+  const Tk = (k) => (cfg.transitionSeconds || [])[k - 1] ?? T; // k번째 장면으로 넘어가는 전환 길이(초)
+  const L = sceneDur.map((d, i) => d + (i < n - 1 ? Tk(i + 1) : 0));
   const base = cfg.clipSeconds || 5;
   cfg.scenes.forEach((s, i) => {
     args.push('-i', clipFiles[s.clip ?? i]);
@@ -141,7 +142,7 @@ if (style === 'clips') {
   let acc = 0, prev = 'v0';
   for (let i = 1; i < n; i++) {
     acc += sceneDur[i - 1];
-    f.push(`[${prev}][v${i}]xfade=transition=${trans[(i - 1) % trans.length]}:duration=${T}:offset=${acc.toFixed(3)}[x${i}]`);
+    f.push(`[${prev}][v${i}]xfade=transition=${trans[(i - 1) % trans.length]}:duration=${Tk(i)}:offset=${acc.toFixed(3)}[x${i}]`);
     prev = `x${i}`;
   }
   f.push(`[${prev}]ass=captions.ass,fade=t=out:st=${(dur - 0.4).toFixed(2)}:d=0.4[vout]`);

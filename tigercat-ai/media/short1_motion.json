@@ -67,5 +67,17 @@
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_162542_0b54e076-50b8-4574-bcb3-5a4fd1f1adf5.mp4",
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_163305_ef5b993f-e0af-40fb-954c-dec1057b052a.mp4",
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_163307_4be68fa3-daf5-4428-85cf-70c0fa579a72.mp4"
+  ],
+  "transitions": [
+    "fade",
+    "fade",
+    "smoothleft",
+    "fade"
+  ],
+  "transitionSeconds": [
+    0.3,
+    0.6,
+    0.25,
+    0.3
   ]
 }
