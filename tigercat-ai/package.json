@@ -1,6 +1,6 @@
 {
   "name": "tigercat-ai",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "private": true,
   "type": "module",
   "description": "tigercat-ai: AI 직원 회사 (업무사이트 · 메신저 · 기억 시스템)",

@@ -12,7 +12,8 @@
       "clip": 0,
       "sentences": [
         "You will never feel ready."
-      ]
+      ],
+      "speed": 1
     },
     {
       "clip": 1,
@@ -22,7 +23,9 @@
         "The perfect version of you.",
         "Months pass.",
         "Nothing starts."
-      ]
+      ],
+      "speed": 1.5,
+      "fill": "pingpong"
     },
     {
       "clip": 2,
@@ -31,7 +34,10 @@
         "Nobody feels ready.",
         "The ones who win just move first.",
         "They are scared too."
-      ]
+      ],
+      "speed": 1.2,
+      "fill": "hold",
+      "pushIn": 0.1
     },
     {
       "clip": 3,
@@ -39,7 +45,8 @@
         "Ready is a feeling.",
         "Start is a decision.",
         "So start before you are ready."
-      ]
+      ],
+      "speed": 0.74
     },
     {
       "clip": 4,
@@ -47,7 +54,8 @@
         "Take one step.",
         "Right now.",
         "Follow Tigercat AI for more."
-      ]
+      ],
+      "speed": 1
     }
   ],
   "assetsFrom": "short1",

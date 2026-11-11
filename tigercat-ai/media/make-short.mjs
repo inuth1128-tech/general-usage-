@@ -108,12 +108,33 @@ const n = cfg.scenes.length;
 const f = [];
 const T = 0.25; // 장면 전환 길이(초)
 if (style === 'clips') {
-  // AI 영상 클립: 장면 길이보다 짧으면 살짝 느리게(최대 1.5배) 늘리고, 그래도 모자라면 마지막 장면을 잠시 멈춘다. 길면 자른다.
+  // AI 영상 클립 조립. 장면마다 재생 속도를 정할 수 있다.
+  //   speed: 1 = 원래 속도, 1.5 = 1.5배 빠르게, 0.74 = 느리게. (안 적으면 장면 길이에 맞춰 자동으로 늘림: 최대 1.5배 느리게)
+  //   fill : 속도를 올려 클립이 장면보다 짧아질 때 남는 시간 채우기. pingpong = 앞뒤 왕복 재생, hold = 마지막 화면 유지
+  //   pushIn: 장면 내내 천천히 확대 (예: 0.1 = 10%). 멈춰 있는 구간이 심심하지 않게 한다.
   const L = sceneDur.map((d, i) => d + (i < n - 1 ? T : 0));
+  const base = cfg.clipSeconds || 5;
   cfg.scenes.forEach((s, i) => {
     args.push('-i', clipFiles[s.clip ?? i]);
-    f.push(`[${i}:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1,setpts=PTS*${Math.min(1.5, Math.max(1, L[i] / (cfg.clipSeconds || 5)))}[s${i}]`);
-    f.push(`[s${i}]tpad=stop_mode=clone:stop_duration=${L[i].toFixed(3)},trim=duration=${L[i].toFixed(3)},setpts=PTS-STARTPTS,format=yuv420p[v${i}]`);
+    const sp = s.speed ?? 1 / Math.min(1.5, Math.max(1, L[i] / base));
+    const c = base / sp; // 속도 조정 후 클립 길이
+    const k = c >= L[i] ? 1 : Math.min(8, Math.ceil(L[i] / c));
+    const fill = s.fill || 'hold';
+    if (k > 1 && fill === 'pingpong') {
+      const seg = (j) => (j % 2 === 0 ? `q${i}_${j}` : `r${i}_${j}`);
+      f.push(`[${i}:v]setpts=PTS/${sp},fps=30,split=${k}${Array.from({ length: k }, (_, j) => `[q${i}_${j}]`).join('')}`);
+      for (let j = 1; j < k; j += 2) f.push(`[q${i}_${j}]reverse[r${i}_${j}]`);
+      f.push(`${Array.from({ length: k }, (_, j) => `[${seg(j)}]`).join('')}concat=n=${k}:v=1:a=0,trim=duration=${L[i].toFixed(3)},setpts=PTS-STARTPTS[pp${i}]`);
+    } else {
+      f.push(`[${i}:v]setpts=PTS/${sp},fps=30,tpad=stop_mode=clone:stop_duration=${L[i].toFixed(3)},trim=duration=${L[i].toFixed(3)},setpts=PTS-STARTPTS[pp${i}]`);
+    }
+    const z = s.pushIn || 0;
+    const frames = Math.max(2, Math.round(L[i] * 30));
+    const sizer = z > 0
+      ? `scale=2160:3840:flags=lanczos,zoompan=z='1+${z}*on/${frames}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=30`
+      : 'scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920';
+    f.push(`[pp${i}]${sizer},setsar=1,format=yuv420p,fps=30,settb=1/30[v${i}]`);
+    log(`장면 ${i + 1}: 재생속도 x${sp.toFixed(2)}, 클립 ${c.toFixed(1)}초 → 장면 ${L[i].toFixed(1)}초 (${k > 1 ? (fill === 'pingpong' ? '왕복 재생' : '마지막 화면 유지') : '그대로'}${z > 0 ? ', 천천히 확대' : ''})`);
   });
   args.push('-i', audioPath);
   const trans = cfg.transitions || ['fade', 'circleopen', 'smoothleft', 'fade'];
@@ -158,6 +179,7 @@ if (style === 'clips') {
   f.push(`[vc]ass=captions.ass,fade=t=out:st=${(dur - 0.4).toFixed(2)}:d=0.4[vout]`);
 }
 f.push(`[${n}:a]atempo=${tempo.toFixed(4)},afade=t=out:st=${(dur - 0.3).toFixed(2)}:d=0.3[aout]`);
+if (process.env.SHOW_GRAPH) console.log(f.join('\n'));
 args.push('-filter_complex', f.join(';'), '-map', '[vout]', '-map', '[aout]', '-t', dur.toFixed(3),
   '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', `${cfg.name}.mp4`);
 await mkdir(out, { recursive: true });
