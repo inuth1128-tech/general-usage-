@@ -117,3 +117,23 @@ if (db.prepare('SELECT COUNT(*) AS n FROM plans').get().n === 0) {
 제안: 막대 인간을 유지하고 경과 시간 HUD + 하단 자막 형식만 가져오기. 예) "만약 오늘 시작하지 않는다면, 1년 뒤에는?"
 자세한 분석: docs/NEXT_VIDEO.md`);
 }
+
+// 한 번만 올리는 기본 계획들. 올린 기록(meta)을 남겨서, 대표님이 삭제해도 다시 생기지 않는다.
+db.exec('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)');
+function seedOnce(key, title, body, when) {
+  if (db.prepare('SELECT 1 FROM meta WHERE key = ?').get(key)) return;
+  db.prepare('INSERT INTO plans (title, body, remind_when) VALUES (?, ?, ?)').run(title, body, when);
+  db.prepare('INSERT INTO meta (key, value) VALUES (?, ?)').run(key, new Date().toISOString());
+}
+seedOnce(
+  'seed_plan_unlimited_chat',
+  '다음 영상부터: 새 Claude 채팅방(claude.ai)을 열어서 이미지 만들기 (무제한 혜택)',
+  `왜: Higgsfield 무제한 혜택은 Claude Code에서는 쓸 수 없고, Claude 채팅 / Claude Cowork / ChatGPT에서만 쓸 수 있습니다. (Claude Code에서는 이미지 1장당 크레딧이 나감)
+무제한 대상(2026.11.1 ~ 2027.11.4): Nano Banana, Kling O1 Image, Seedream 4.5, Seedream 5.0 Lite, FLUX.2 Pro — 모두 이미지 모델입니다. 영상 클립(Kling 등)은 무제한이 아니라 크레딧으로 만듭니다.
+할 일:
+1) claude.ai 에서 새 채팅방을 연다 (Higgsfield 연결 확인)
+2) 장면 이미지를 그 채팅방에서 만든다 (캐릭터 시안 A를 기준 이미지로 참고)
+3) 이미지가 정해지면 이 Claude Code 세션으로 돌아와 영상 클립 제작과 조립을 진행한다
+참고: 채팅방에서는 이 프로젝트 파일에 접근할 수 없으니 이미지 주소만 가져오면 됩니다.`,
+  'after_post'
+);

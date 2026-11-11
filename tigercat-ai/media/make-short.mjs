@@ -30,7 +30,7 @@ console.log('\n[1/4] 파일 내려받기');
 const imgFiles = (cfg.images || []).map((_, i) => join(assets, `scene${i + 1}.png`));
 for (let i = 0; i < imgFiles.length; i++) await fetchTo(cfg.images[i], imgFiles[i]);
 const clipFiles = (cfg.clips || []).map((_, i) => join(assets, `clip${i + 1}.mp4`));
-for (let i = 0; i < clipFiles.length; i++) await fetchTo(cfg.clips[i], clipFiles[i]);
+for (let i = 0; i < clipFiles.length; i++) if (cfg.clips[i]) await fetchTo(cfg.clips[i], clipFiles[i]); // null 은 안 쓰는 칸
 await fetchTo(cfg.audio, join(assets, 'narration.mp3'));
 
 // ffmpeg / ffprobe 확인
@@ -121,7 +121,8 @@ if (style === 'clips') {
     const file = clipFiles[s.clip ?? i];
     args.push('-i', file);
     const base = clipLen(file); // 클립마다 실제 길이를 잰다 (5초, 10초 등)
-    const sp = s.speed ?? 1 / Math.min(1.5, Math.max(1, L[i] / base));
+    // speed: 'fit' = 클립 전체가 장면 길이에 딱 맞게 (클립 끝 화면이 다음 장면 첫 화면과 이어질 때 사용)
+    const sp = s.speed === 'fit' ? base / L[i] : (s.speed ?? 1 / Math.min(1.5, Math.max(1, L[i] / base)));
     const c = base / sp; // 속도 조정 후 클립 길이
     const k = c >= L[i] ? 1 : Math.min(8, Math.ceil(L[i] / c));
     const fill = s.fill || 'hold';

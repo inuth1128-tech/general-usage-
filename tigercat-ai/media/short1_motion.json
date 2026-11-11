@@ -28,14 +28,14 @@
       "fill": "pingpong"
     },
     {
-      "clip": 5,
+      "clip": 6,
       "sentences": [
         "Here's the secret.",
         "Nobody feels ready.",
         "The ones who win just move first.",
         "They are scared too."
       ],
-      "speed": 0.8
+      "speed": "fit"
     },
     {
       "clip": 3,
@@ -65,7 +65,8 @@
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_162542_0b54e076-50b8-4574-bcb3-5a4fd1f1adf5.mp4",
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_163305_ef5b993f-e0af-40fb-954c-dec1057b052a.mp4",
     "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261110_163307_4be68fa3-daf5-4428-85cf-70c0fa579a72.mp4",
-    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261111_130339_b48b6929-a336-4d21-b7f0-2e29a1c7c835.mp4"
+    null,
+    "https://d8j0ntlcm91z4.cloudfront.net/user_3L3Wr79jUHAhpie8EupcqoHmVAg/hf_20261111_141336_c8d095e3-bee5-40b8-ad40-94b3fe47d83a.mp4"
   ],
   "transitions": [
     "fade",
