@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tigercat-ai 영상 제작실</title>
+<style>
+  :root { --bg:#0a0a0a; --card:#141414; --line:#2a2a2a; --text:#f2f2f2; --mute:#9a9a9a; --red:#ff3b30; --green:#34c759; --yellow:#ffcc00; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui, "Malgun Gothic", sans-serif; line-height:1.5; }
+  header, main { max-width:1000px; margin:0 auto; padding:0 20px; }
+  header { padding-top:24px; } main { padding-bottom:60px; }
+  h1 { margin:0; font-size:26px; } h1 span { color:var(--red); }
+  a { color:var(--mute); } .sub { color:var(--mute); margin-top:4px; }
+  h2 { font-size:16px; color:var(--mute); font-weight:600; margin:30px 0 12px; }
+  select, button, textarea { font:inherit; }
+  select { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:9px 12px; }
+  button { background:var(--red); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-weight:700; cursor:pointer; }
+  button.sub2 { background:transparent; border:1px solid var(--line); color:var(--text); font-weight:600; padding:8px 14px; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:16px; }
+  #msg { color:var(--mute); font-size:14px; }
+  pre.log { background:#000; border:1px solid var(--line); border-radius:12px; padding:12px; color:#cfcfcf; font-size:12px; max-height:220px; overflow:auto; white-space:pre-wrap; margin:10px 0 0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px; }
+  .card h3 { margin:0 0 8px; font-size:14px; } .card small { color:var(--mute); display:block; margin-top:6px; font-size:12px; }
+  video, img { width:100%; border-radius:10px; background:#000; display:block; }
+  video.final { max-width:360px; margin:0 auto; }
+  .pub { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:12px; }
+  .pub .h { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:700; }
+  textarea { width:100%; min-height:90px; background:#000; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px; resize:vertical; }
+  .ok { color:var(--green); } .warn { color:var(--yellow); } .bad { color:var(--red); }
+</style>
+</head>
+<body>
+<header>
+  <h1>tigercat<span>-ai</span> 영상 제작실</h1>
+  <div class="sub"><a href="/">← 업무사이트로</a> · 영상 확인, 만들기, 게시 문구 복사를 한 화면에서</div>
+  <div class="bar">
+    <select id="proj"></select>
+    <button id="build">영상 만들기</button>
+    <button class="sub2" id="open">완성 폴더 열기</button>
+    <button class="sub2" id="update">최신 버전으로 업데이트</button>
+    <span id="msg"></span>
+  </div>
+  <pre class="log" id="log" style="display:none"></pre>
+</header>
+<main>
+  <h2>완성 영상</h2>
+  <div id="final"></div>
+
+  <h2>게시 문구 (눌러서 복사)</h2>
+  <div id="pub"></div>
+
+  <h2>장면별 영상 클립</h2>
+  <div class="grid" id="clips"></div>
+
+  <h2>장면 이미지</h2>
+  <div class="grid" id="images"></div>
+
+  <h2>음성</h2>
+  <div id="audio"></div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function get(p) { const r = await fetch(p); if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); }
+async function post(p, b) { const r = await fetch(p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b || {}) }); const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j; }
+const say = (t, cls) => { $('msg').className = cls || ''; $('msg').textContent = t; };
+let cur = null, timer = null;
+
+async function loadProject() {
+  const name = $('proj').value; if (!name) return;
+  const p = await get('/api/studio/project?name=' + encodeURIComponent(name)); cur = p;
+  $('final').innerHTML = p.output
+    ? `<video class="final" controls preload="metadata" src="${p.output.url}?t=${Math.round(p.output.mtime)}"></video>
+       <div class="sub" style="text-align:center;margin-top:8px">만든 시각 ${new Date(p.output.mtime).toLocaleString('ko-KR')} · ${(p.output.size / 1048576).toFixed(1)} MB</div>`
+    : '<div class="sub">아직 만든 영상이 없습니다. 위의 <b>영상 만들기</b>를 눌러 주세요.</div>';
+  $('pub').innerHTML = p.publish ? p.publish.platforms.map((x, i) => `
+    <div class="pub"><div class="h"><span>${esc(x.name)}</span><button class="sub2" onclick="copyText(${i}, this)">복사</button></div>
+    <textarea readonly id="pt${i}">${esc(x.text)}</textarea></div>`).join('') : '<div class="sub">이 영상에는 게시 문구가 없습니다.</div>';
+  $('clips').innerHTML = p.clips.some(Boolean) ? p.scenes.map((s) => (s.clip !== null && p.clips[s.clip]) ? `
+    <div class="card"><h3>장면 ${s.n}</h3><video controls muted loop preload="metadata" src="${esc(p.clips[s.clip])}"></video>
+    <small>${esc(s.sentences.join(' '))}</small><small>재생 속도: ${s.speed === null ? '자동' : s.speed === 'fit' ? '장면 길이에 맞춤' : '×' + s.speed}</small></div>` : '').join('') : '<div class="sub">이 영상은 클립 없이 이미지로 만듭니다.</div>';
+  $('images').innerHTML = p.images.length ? p.images.map((u, i) => `<div class="card"><h3>이미지 ${i + 1}</h3><img loading="lazy" src="${esc(u)}"></div>`).join('') : '<div class="sub">장면 이미지가 없습니다.</div>';
+  $('audio').innerHTML = p.audio ? `<audio controls preload="none" src="${esc(p.audio)}" style="width:100%;max-width:480px"></audio>` : '<div class="sub">음성이 없습니다.</div>';
+}
+async function copyText(i, btn) {
+  const t = $('pt' + i); t.select();
+  try { await navigator.clipboard.writeText(t.value); } catch { document.execCommand('copy'); }
+  const old = btn.textContent; btn.textContent = '복사됨 ✓'; setTimeout(() => (btn.textContent = old), 1500);
+}
+async function poll() {
+  clearTimeout(timer);
+  const s = await get('/api/studio/status');
+  if (s.log.length) { $('log').style.display = 'block'; $('log').textContent = s.log.join('\n'); $('log').scrollTop = 1e9; }
+  $('build').disabled = s.running;
+  if (s.running) { say('영상을 만드는 중입니다… 1~3분 걸립니다. 이 창을 닫지 마세요.', 'warn'); timer = setTimeout(poll, 1500); }
+  else if (s.exitCode === 0 && s.endedAt) { say('완성했습니다! 위의 완성 영상을 확인해 주세요.', 'ok'); loadProject(); }
+  else if (s.exitCode !== null && s.endedAt) say('영상 만들기에 실패했습니다. 아래 글자를 캡처해서 알려 주세요.', 'bad');
+}
+$('proj').onchange = loadProject;
+$('build').onclick = async () => { try { await post('/api/studio/build', { name: $('proj').value }); say('시작했습니다…', 'warn'); poll(); } catch (e) { say(e.message, 'bad'); } };
+$('open').onclick = async () => { try { const j = await post('/api/studio/open', { name: $('proj').value }); say(j.note || '폴더를 열었습니다.', 'ok'); } catch (e) { say(e.message, 'bad'); } };
+$('update').onclick = async () => {
+  $('update').disabled = true; say('최신 버전을 받는 중…', 'warn');
+  try {
+    const j = await post('/api/studio/update');
+    if (j.upToDate) say('이미 최신 버전입니다.', 'ok');
+    else if (confirm('새 버전을 받았습니다. 사이트를 다시 켜면 모두 적용됩니다. 지금 다시 켤까요?')) {
+      await post('/api/studio/restart'); say('다시 켜는 중입니다. 5~10초 뒤 이 페이지를 새로고침(Ctrl+F5)하세요.', 'warn');
+    } else say('받았습니다. 적용하려면 사이트를 다시 켜 주세요.', 'warn');
+  } catch (e) { say(e.message, 'bad'); }
+  $('update').disabled = false;
+};
+(async () => {
+  try {
+    const list = await get('/api/studio/projects');
+    $('proj').innerHTML = list.map((p) => `<option value="${esc(p.name)}">${esc(p.title)} (${esc(p.name)})</option>`).join('');
+    const pref = list.find((p) => p.name === 'short1_motion'); if (pref) $('proj').value = pref.name;
+    await loadProject(); poll();
+  } catch (e) { say('불러오지 못했습니다: ' + e.message, 'bad'); }
+})();
+</script>
+</body>
+</html>

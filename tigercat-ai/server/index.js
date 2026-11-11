@@ -1,9 +1,11 @@
 // 업무사이트 서버: 내 컴퓨터(localhost)에서만 접속 가능하다.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
+import { createReadStream, statSync } from 'node:fs';
 import { dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './db.js';
+import { listProjects, getProject, outputFile, buildStatus, startBuild, openFolder, updateFromGit } from './studio.js';
 import { listPlans, addPlan, updatePlan, deletePlan, markPosted } from './plans.js';
 import { listMemories, addMemory, updateMemory, deleteMemory, recall } from './memory.js';
 import { startMeeting, ceoSay, listMeetings, getMeeting } from './meetings.js';
@@ -57,6 +59,15 @@ const server = createServer(async (req, res) => {
         const d = await readJson(req);
         return reply(res, reviewTask(m[1], d.verdict, d.note));
       }
+      if (url.pathname === '/api/studio/build') return reply(res, startBuild((await readJson(req)).name), 202);
+      if (url.pathname === '/api/studio/open') return reply(res, openFolder((await readJson(req)).name));
+      if (url.pathname === '/api/studio/update') return reply(res, updateFromGit());
+      if (url.pathname === '/api/studio/restart') {
+        // start-site.cmd 가 종료 코드 75 를 보면 사이트를 다시 켠다.
+        json(res, { ok: true });
+        setTimeout(() => process.exit(75), 300);
+        return;
+      }
       if (url.pathname === '/api/plans') {
         const d = await readJson(req);
         return reply(res, addPlan({ title: d.title, body: d.body, remindWhen: d.remindWhen, remindDate: d.remindDate }), 201);
@@ -89,6 +100,25 @@ const server = createServer(async (req, res) => {
     if (url.pathname === '/api/memories/recall') {
       const emp = url.searchParams.get('employee') || 'secretary';
       return json(res, recall(emp, url.searchParams.get('q') || '').map((x) => ({ id: x.id, kind: x.kind, summary: x.summary, doNotRepeat: x.do_not_repeat, company: x.employee_id === null })));
+    }
+    if (url.pathname === '/api/studio/projects') return json(res, listProjects());
+    if (url.pathname === '/api/studio/project') { const pr = getProject(url.searchParams.get('name')); return pr ? json(res, pr) : json(res, { error: 'not found' }, 404); }
+    if (url.pathname === '/api/studio/status') return json(res, buildStatus());
+    let vm;
+    if ((vm = url.pathname.match(/^\/media-out\/([a-z0-9_]+)\/([a-z0-9_]+)\.mp4$/)) && vm[1] === vm[2]) {
+      // 완성 영상 재생 (앞뒤로 건너뛰기를 위해 Range 요청 지원)
+      const f = outputFile(vm[1]);
+      if (!f) return json(res, { error: 'not found' }, 404);
+      const size = statSync(f).size;
+      const rg = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
+      if (rg) {
+        const start = rg[1] ? Number(rg[1]) : 0, end = rg[2] ? Math.min(Number(rg[2]), size - 1) : size - 1;
+        if (start > end || start >= size) { res.writeHead(416, { 'Content-Range': `bytes */${size}` }); return res.end(); }
+        res.writeHead(206, { 'Content-Type': 'video/mp4', 'Accept-Ranges': 'bytes', 'Content-Range': `bytes ${start}-${end}/${size}`, 'Content-Length': end - start + 1 });
+        return createReadStream(f, { start, end }).pipe(res);
+      }
+      res.writeHead(200, { 'Content-Type': 'video/mp4', 'Accept-Ranges': 'bytes', 'Content-Length': size });
+      return createReadStream(f).pipe(res);
     }
     if (url.pathname === '/api/plans') return json(res, listPlans());
     if (url.pathname === '/api/meetings') return json(res, listMeetings());
