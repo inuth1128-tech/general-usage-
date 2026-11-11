@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './db.js';
+import { listPlans, addPlan, updatePlan, deletePlan, markPosted } from './plans.js';
 import { listMemories, addMemory, updateMemory, deleteMemory, recall } from './memory.js';
 import { startMeeting, ceoSay, listMeetings, getMeeting } from './meetings.js';
 import { submitInstruction, reviewTask, updateEmployee, todayUsage } from './agents.js';
@@ -56,6 +57,13 @@ const server = createServer(async (req, res) => {
         const d = await readJson(req);
         return reply(res, reviewTask(m[1], d.verdict, d.note));
       }
+      if (url.pathname === '/api/plans') {
+        const d = await readJson(req);
+        return reply(res, addPlan({ title: d.title, body: d.body, remindWhen: d.remindWhen, remindDate: d.remindDate }), 201);
+      }
+      if (url.pathname === '/api/plans/posted') return reply(res, markPosted());
+      if ((m = url.pathname.match(/^\/api\/plans\/(\d+)\/delete$/))) return reply(res, deletePlan(m[1]));
+      if ((m = url.pathname.match(/^\/api\/plans\/(\d+)$/))) return reply(res, updatePlan(m[1], await readJson(req)));
       if (url.pathname === '/api/memories') {
         const d = await readJson(req);
         return reply(res, addMemory({ employeeId: d.employeeId || null, kind: d.kind || 'rule', summary: d.summary, doNotRepeat: !!d.doNotRepeat }), 201);
@@ -82,6 +90,7 @@ const server = createServer(async (req, res) => {
       const emp = url.searchParams.get('employee') || 'secretary';
       return json(res, recall(emp, url.searchParams.get('q') || '').map((x) => ({ id: x.id, kind: x.kind, summary: x.summary, doNotRepeat: x.do_not_repeat, company: x.employee_id === null })));
     }
+    if (url.pathname === '/api/plans') return json(res, listPlans());
     if (url.pathname === '/api/meetings') return json(res, listMeetings());
     let mm;
     if ((mm = url.pathname.match(/^\/api\/meetings\/(\d+)$/))) {

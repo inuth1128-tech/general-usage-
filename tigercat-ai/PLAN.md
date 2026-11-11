@@ -70,7 +70,7 @@
 - 6단계(기억 시스템): 완료 (대표 컴퓨터에서 확인됨)
 - 7단계(쇼츠 1편): 캐릭터·이미지 5장·음성 통과, 영상 조립 스크립트 완성 — 실행 대기 (docs/STEP7.md)
 
-- **다음 영상 계획(보류):** 첫 영상 게시가 끝나면 대표님께 리마인드 → docs/NEXT_VIDEO.md
+- **다음 영상 계획(보류):** 업무사이트의 '계획 게시판'에 올려 둠. 첫 영상 게시 후 '영상 게시 완료 표시'를 누르면 맨 위에 알림 → docs/PLANBOARD.md, docs/NEXT_VIDEO.md
 
 ## 1단계 진행 현황: 완료
 PowerShell · Node.js · npm · git · 저장소 clone · Claude Code(Pro) · Higgsfield MCP 연결 · ffmpeg · 채널 4개 개설

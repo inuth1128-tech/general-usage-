@@ -51,6 +51,12 @@
   .mem .body { flex:1; } .mem small { color:var(--mute); }
   .k-rule { color:#ffcc00; } .k-failure { color:var(--red); } .k-success { color:#34c759; } .k-lesson { color:#5ac8fa; }
   .nr { color:var(--red); font-weight:700; font-size:12px; }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px; }
+  .plan.due { border-color:#ffcc00; }
+  .plan h3 { margin:0 0 6px; font-size:16px; } .plan pre { white-space:pre-wrap; word-break:break-word; margin:8px 0; font:inherit; color:#d8d8d8; font-size:14px; }
+  .plan .meta { color:var(--mute); font-size:13px; } .plan.done { opacity:.5; }
+  #banner { display:none; background:#2a2400; border:1px solid #ffcc00; border-radius:14px; padding:14px 16px; margin:16px 0 0; }
+  #banner b { color:#ffcc00; }
   .st-approved { color:#34c759; } .st-rejected { color:var(--red); }
   .task { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px; }
   .task .head { display:flex; justify-content:space-between; gap:10px; color:var(--mute); font-size:13px; }
@@ -62,11 +68,24 @@
 <body>
 <header>
   <h1>tigercat<span>-ai</span> 업무사이트</h1>
-  <div class="sub">6단계: 기억 시스템 — 직원들이 관련 있는 과거 경험을 찾아 쓰고, 대표가 규칙을 가르칩니다 (내 컴퓨터에서만 열립니다)</div>
+  <div class="sub">계획 게시판 — 다음 영상 계획을 미리 올려 두면 때가 됐을 때 알려 줍니다 (내 컴퓨터에서만 열립니다)</div>
 </header>
 <main>
   <div id="err"></div>
   <div class="stats" id="stats"></div>
+
+  <div id="banner"></div>
+
+  <h2>계획 게시판 (다음 영상)</h2>
+  <div id="plans"></div>
+  <div class="row" style="margin-top:6px">
+    <input class="f" id="pTitle" placeholder="새 계획 제목 예) 다음 영상: 만약 오늘 시작하지 않는다면" style="flex:1;min-width:240px;margin:0">
+    <select id="pWhen"><option value="after_post">영상 게시 완료 후 알림</option><option value="date">날짜에 알림</option><option value="manual">알림 없이 보관</option></select>
+    <input class="f" type="date" id="pDate" style="width:auto;margin:0;display:none">
+  </div>
+  <textarea id="pBody" style="min-height:70px;margin-top:8px" placeholder="내용 (레퍼런스, 확인할 것, 아이디어)"></textarea>
+  <div class="row"><button id="pAdd">계획 올리기</button><button class="sub" id="pPosted">영상 게시 완료 표시</button>
+    <span class="usage">"게시 완료 표시"를 누르면 '게시 완료 후 알림' 계획이 맨 위에 나타납니다.</span></div>
 
   <h2>업무 지시하기</h2>
   <textarea id="ins" placeholder="예) 첫 번째 쇼츠 주제 3개를 제안해 줘. 주제는 '실패해도 계속하는 이유' 같은 동기부여로."></textarea>
@@ -133,6 +152,42 @@ async function get(path) { const r = await fetch(path); if (!r.ok) throw new Err
 
 const STATUS = { requested: '접수됨', working: '처리 중…', reported: '보고 완료 · 확인 필요', approved: '승인됨', rejected: '반려됨', failed: '실패' };
 let EMPS = [];
+let PLANS = [];
+const WHENTXT = { manual: '알림 없음', after_post: '영상 게시 완료 후', date: '날짜' };
+async function loadPlans() {
+  PLANS = await get('/api/plans');
+  const due = PLANS.filter((p) => p.due && p.status !== 'done');
+  const b = $('banner');
+  if (due.length) {
+    b.style.display = 'block';
+    b.innerHTML = `<b>⏰ 지금 시작할 계획이 ${due.length}개 있습니다</b>` + due.map((p) => `<div style="margin-top:8px"><b>${esc(p.title)}</b>
+      <div class="actions"><button class="sub" onclick="planMeeting(${p.id})">이 계획으로 회의 열기 준비</button><button class="sub" onclick="planDone(${p.id})">완료로 표시</button></div></div>`).join('');
+  } else b.style.display = 'none';
+  $('plans').innerHTML = PLANS.length ? PLANS.map((p) => `
+    <div class="plan ${p.due && p.status !== 'done' ? 'due' : ''} ${p.status === 'done' ? 'done' : ''}">
+      <h3>${esc(p.title)}</h3>
+      <div class="meta">${p.status === 'done' ? '완료' : p.due ? '지금 시작할 계획' : '대기 중'} · 알림: ${WHENTXT[p.remindWhen]}${p.remindDate ? ' ' + esc(p.remindDate) : ''} · ${esc(p.createdAt)}</div>
+      ${p.body ? `<pre>${esc(p.body)}</pre>` : ''}
+      <div class="actions">${p.status !== 'done' ? `<button class="sub" onclick="planDone(${p.id})">완료</button>` : ''}<button class="sub" onclick="planDel(${p.id})">삭제</button></div>
+    </div>`).join('') : '<div class="usage">올려 둔 계획이 없습니다.</div>';
+}
+async function planDone(id) { if (await post('/api/plans/' + id, { status: 'done' })) loadPlans(); }
+async function planDel(id) { if (confirm('이 계획을 삭제할까요?') && await post('/api/plans/' + id + '/delete', {})) loadPlans(); }
+function planMeeting(id) {
+  const p = PLANS.find((x) => x.id === id); if (!p) return;
+  $('topic').value = '다음 영상 계획 논의: ' + p.title + '\n' + p.body.slice(0, 300);
+  $('topic').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+$('pWhen').onchange = () => { $('pDate').style.display = $('pWhen').value === 'date' ? '' : 'none'; };
+$('pAdd').onclick = async () => {
+  const title = $('pTitle').value.trim(); if (!title) return;
+  const j = await post('/api/plans', { title, body: $('pBody').value, remindWhen: $('pWhen').value, remindDate: $('pDate').value });
+  if (j) { $('pTitle').value = ''; $('pBody').value = ''; loadPlans(); }
+};
+$('pPosted').onclick = async () => {
+  const j = await post('/api/plans/posted', {});
+  if (j) { await loadPlans(); if (!j.changed) alert('"게시 완료 후 알림"으로 대기 중인 계획이 없습니다.'); else window.scrollTo({ top: 0, behavior: 'smooth' }); }
+};
 const KIND = { rule: '규칙', lesson: '교훈', success: '성공', failure: '실패', note: '메모' };
 function renderMemSelects() {
   const emps = EMPS.map((e) => `<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('');
@@ -292,7 +347,7 @@ async function loadStats() {
   try {
     await loadEmps();
     await loadStats();
-    poll(); refreshMeetings(); loadMems();
+    poll(); refreshMeetings(); loadMems(); loadPlans();
   } catch (e) {
     $('err').textContent = '서버에 연결하지 못했습니다: ' + e.message;
   }
