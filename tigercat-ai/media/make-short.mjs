@@ -114,9 +114,11 @@ if (style === 'clips') {
   //   pushIn: 장면 내내 천천히 확대 (예: 0.1 = 10%). 멈춰 있는 구간이 심심하지 않게 한다.
   const Tk = (k) => (cfg.transitionSeconds || [])[k - 1] ?? T; // k번째 장면으로 넘어가는 전환 길이(초)
   const L = sceneDur.map((d, i) => d + (i < n - 1 ? Tk(i + 1) : 0));
-  const base = cfg.clipSeconds || 5;
+  const clipLen = (file) => parseFloat(spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file], { encoding: 'utf8' }).stdout) || (cfg.clipSeconds || 5);
   cfg.scenes.forEach((s, i) => {
-    args.push('-i', clipFiles[s.clip ?? i]);
+    const file = clipFiles[s.clip ?? i];
+    args.push('-i', file);
+    const base = clipLen(file); // 클립마다 실제 길이를 잰다 (5초, 10초 등)
     const sp = s.speed ?? 1 / Math.min(1.5, Math.max(1, L[i] / base));
     const c = base / sp; // 속도 조정 후 클립 길이
     const k = c >= L[i] ? 1 : Math.min(8, Math.ceil(L[i] / c));
@@ -135,7 +137,7 @@ if (style === 'clips') {
       ? `scale=2160:3840:flags=lanczos,zoompan=z='1+${z}*on/${frames}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=30`
       : 'scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920';
     f.push(`[pp${i}]${sizer},setsar=1,format=yuv420p,fps=30,settb=1/30[v${i}]`);
-    log(`장면 ${i + 1}: 재생속도 x${sp.toFixed(2)}, 클립 ${c.toFixed(1)}초 → 장면 ${L[i].toFixed(1)}초 (${k > 1 ? (fill === 'pingpong' ? '왕복 재생' : '마지막 화면 유지') : '그대로'}${z > 0 ? ', 천천히 확대' : ''})`);
+    log(`장면 ${i + 1}: 재생속도 x${sp.toFixed(2)}, 클립 ${base.toFixed(1)}초 → ${c.toFixed(1)}초 → 장면 ${L[i].toFixed(1)}초 (${k > 1 ? (fill === 'pingpong' ? '왕복 재생' : '마지막 화면 유지') : '그대로'}${z > 0 ? ', 천천히 확대' : ''})`);
   });
   args.push('-i', audioPath);
   const trans = cfg.transitions || ['fade', 'circleopen', 'smoothleft', 'fade'];
